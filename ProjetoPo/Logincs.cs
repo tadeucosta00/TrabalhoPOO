@@ -21,7 +21,7 @@ namespace ProjetoPo
         private void button1_Click(object sender, EventArgs e)
         {
 
-            Form1 form1 = new Form1();
+            FormClients form1 = new FormClients();
             form1.Show();
             this.Hide();
 
@@ -33,7 +33,7 @@ namespace ProjetoPo
             data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
             string hash = BitConverter.ToString(data).Replace("-", "").ToLower();
 
-            string filePath = @"c:\Users\tadeu\Desktop\POO\ProjetoPo\clientes.json";
+            string filePath = @"c:\Users\Pedro\Documents\GitHub\TrabalhoPOO\clientes.json";
 
             string jsonData = File.ReadAllText(filePath);
 

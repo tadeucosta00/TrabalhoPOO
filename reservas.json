@@ -1,0 +1,94 @@
+[
+  {
+    "Id": 1,
+    "Pessoa": {
+      "Id": 1,
+      "Nome": "Tadeu",
+      "Email": "tadeucosta00@gmail.com",
+      "Telefone": "932134049",
+      "DocumentoIdentidade": "1231232"
+    },
+    "Alojamento": {
+      "Id": 1,
+      "Nome": "Hotel Melia",
+      "Tipo": "Hostel",
+      "Localizacao": "Braga",
+      "PrecoPorNoite": 45.0,
+      "CapacidadeMaxima": 2,
+      "Disponivel": true
+    },
+    "DataCheckIn": "2024-10-23T00:00:00",
+    "DataCheckOut": "2024-10-25T00:00:00",
+    "ValorTotal": 90.0,
+    "CheckIN": false
+  },
+  {
+    "Id": 2,
+    "Pessoa": {
+      "Id": 3,
+      "Nome": "Ricardo",
+      "Email": "fds",
+      "Telefone": "342",
+      "DocumentoIdentidade": "432"
+    },
+    "Alojamento": {
+      "Id": 2,
+      "Nome": "Hotel NH",
+      "Tipo": "Hotel",
+      "Localizacao": "Lisboa",
+      "PrecoPorNoite": 99.0,
+      "CapacidadeMaxima": 2,
+      "Disponivel": true
+    },
+    "DataCheckIn": "2024-10-26T00:00:00",
+    "DataCheckOut": "2024-10-31T00:00:00",
+    "ValorTotal": 495.0,
+    "CheckIN": false
+  },
+  {
+    "Id": 3,
+    "Pessoa": {
+      "Id": 2,
+      "Nome": "Pedro",
+      "Email": "tadeucosta00@gmail.com",
+      "Telefone": "543543",
+      "DocumentoIdentidade": "432432"
+    },
+    "Alojamento": {
+      "Id": 2,
+      "Nome": "Hotel NH",
+      "Tipo": "Hotel",
+      "Localizacao": "Lisboa",
+      "PrecoPorNoite": 99.0,
+      "CapacidadeMaxima": 2,
+      "Disponivel": true
+    },
+    "DataCheckIn": "2024-12-05T00:00:00",
+    "DataCheckOut": "2024-12-27T00:00:00",
+    "ValorTotal": 2178.0,
+    "CheckIN": false
+  },
+  {
+    "Id": 4,
+    "Pessoa": {
+      "Id": 4,
+      "Nome": "Jose",
+      "Email": "fdfsfd",
+      "Telefone": "432432",
+      "DocumentoIdentidade": "543543"
+    },
+    "Alojamento": {
+      "Id": 1,
+      "Nome": "Hotel Melia",
+      "Tipo": "Hostel",
+      "Localizacao": "Braga",
+      "PrecoPorNoite": 45.0,
+      "CapacidadeMaxima": 2,
+      "Disponivel": true
+    },
+    "DataCheckIn": "2024-10-23T00:00:00",
+    "DataCheckOut": "2024-10-24T00:00:00",
+    "ValorTotal": 45.0,
+    "CheckIN": false
+  }
+]

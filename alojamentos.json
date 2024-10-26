@@ -1,0 +1,12 @@
+[
+  {
+    "Nome": "Melia",
+    "Tipo": "Hotel",
+    "Lat": "41.556825525635844",
+    "Log": "-8.394625717730259",
+    "PrecoPorNoite": 432.0,
+    "CapacidadeMaxima": 32,
+    "Disponivel": true,
+    "Id": 1
+  }
+]

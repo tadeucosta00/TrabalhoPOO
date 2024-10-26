@@ -1,0 +1,55 @@
+[
+  {
+    "Nome": "Tadeu",
+    "Email": "tadeucosta00@gmail.com",
+    "Telefone": "932134049",
+    "DocumentoIdentidade": "1231232",
+    "Id": 1
+  },
+  {
+    "Nome": "Pedro",
+    "Email": "tadeucosta00@gmail.com",
+    "Telefone": "543543",
+    "DocumentoIdentidade": "432432",
+    "Id": 2
+  },
+  {
+    "Nome": "Ricardo",
+    "Email": "fds",
+    "Telefone": "342",
+    "DocumentoIdentidade": "432",
+    "Id": 3
+  },
+  {
+    "Nome": "Jos\u00E9",
+    "Email": "fdfsfd",
+    "Telefone": "432432",
+    "DocumentoIdentidade": "543543",
+    "Id": 4
+  },
+  {
+    "Nome": "Pedro",
+    "Email": "fdsa",
+    "Telefone": "fds",
+    "DocumentoIdentidade": "fds",
+    "Id": 5
+  },
+  {
+    "Id": 6,
+    "Adm": false,
+    "Nome": "Pedro",
+    "Email": "tadeu@gmail.com",
+    "Telefone": "7887978",
+    "DocumentoIdentidade": "8732982",
+    "Senha": "0ca0ba524e56a0765d788e392c68e8ea52c283dbe50fb06e63e71f85bf47454d"
+  },
+  {
+    "Id": 7,
+    "Adm": true,
+    "Nome": "jh",
+    "Email": "jhk",
+    "Telefone": "kjh",
+    "DocumentoIdentidade": "kjh",
+    "Senha": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"
+  }
+]

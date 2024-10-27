@@ -39,7 +39,7 @@ namespace ProjetoPo
             data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
             string hash = BitConverter.ToString(data).Replace("-", "").ToLower();
 
-            string filePath = @"c:\Users\tadeu\Desktop\POO\ProjetoPo\clientes.json";
+            string filePath = @"C:\Users\Pedro\Documents\GitHub\TrabalhoPOO\clientes.json";
 
             List<Dictionary<string, object>> clients;
 
@@ -51,6 +51,8 @@ namespace ProjetoPo
             else
             {
                 clients = new List<Dictionary<string, object>>();
+                File.WriteAllText(filePath, JsonSerializer.Serialize(clients, new JsonSerializerOptions { WriteIndented = true }));
+
             }
 
             if (clients.Any(c => c["Email"].ToString() == email))

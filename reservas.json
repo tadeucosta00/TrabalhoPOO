@@ -3,92 +3,37 @@
     "Id": 1,
     "Pessoa": {
       "Id": 1,
-      "Nome": "Tadeu",
-      "Email": "tadeucosta00@gmail.com",
-      "Telefone": "932134049",
-      "DocumentoIdentidade": "1231232"
-    },
-    "Alojamento": {
-      "Id": 1,
-      "Nome": "Hotel Melia",
-      "Tipo": "Hostel",
-      "Localizacao": "Braga",
-      "PrecoPorNoite": 45.0,
-      "CapacidadeMaxima": 2,
-      "Disponivel": true
-    },
-    "DataCheckIn": "2024-10-23T00:00:00",
-    "DataCheckOut": "2024-10-25T00:00:00",
-    "ValorTotal": 90.0,
-    "CheckIN": false
-  },
-  {
-    "Id": 2,
-    "Pessoa": {
-      "Id": 3,
-      "Nome": "Ricardo",
-      "Email": "fds",
-      "Telefone": "342",
-      "DocumentoIdentidade": "432"
+      "Nome": "t",
+      "Email": "t",
+      "Telefone": "t",
+      "DocumentoIdentidade": "t",
+      "Senha": "e3b98a4da31a127d4bde6e43033f66ba274cab0eb7eb1c70ec41402bf6273dd8",
+      "Adm": false
     },
     "Alojamento": {
       "Id": 2,
-      "Nome": "Hotel NH",
+      "Nome": "NH",
       "Tipo": "Hotel",
-      "Localizacao": "Lisboa",
-      "PrecoPorNoite": 99.0,
-      "CapacidadeMaxima": 2,
-      "Disponivel": true
+      "Desc": "A Água Riverside, de 4 estrelas, está localizada em Ferragudo e possui uma marina privada e belas vistas para o Rio Arade. A propriedade disponibiliza piscinas interiores e exteriores.\nTodos os quartos da Água Hotels Riverside têm janelas do chão ao teto que permitem a entrada de muita luz natural. Cada um tem a sua própria varanda, um minibar e acesso gratuito por cabo à Internet.",
+      "Lat": "42.25110",
+      "Log": "-8.54124",
+      "PrecoPorNoite": 200.0,
+      "CapacidadeMaxima": 300,
+      "Disponivel": true,
+      "Estrelas": 5,
+      "Photos": true,
+      "Comodidades": [
+        "Piscina",
+        "Ginasio",
+        "Estacionamento",
+        "Wi-Fi gratuito",
+        "Lavanderia",
+        "Spa"
+      ]
     },
-    "DataCheckIn": "2024-10-26T00:00:00",
-    "DataCheckOut": "2024-10-31T00:00:00",
-    "ValorTotal": 495.0,
-    "CheckIN": false
-  },
-  {
-    "Id": 3,
-    "Pessoa": {
-      "Id": 2,
-      "Nome": "Pedro",
-      "Email": "tadeucosta00@gmail.com",
-      "Telefone": "543543",
-      "DocumentoIdentidade": "432432"
-    },
-    "Alojamento": {
-      "Id": 2,
-      "Nome": "Hotel NH",
-      "Tipo": "Hotel",
-      "Localizacao": "Lisboa",
-      "PrecoPorNoite": 99.0,
-      "CapacidadeMaxima": 2,
-      "Disponivel": true
-    },
-    "DataCheckIn": "2024-12-05T00:00:00",
-    "DataCheckOut": "2024-12-27T00:00:00",
-    "ValorTotal": 2178.0,
-    "CheckIN": false
-  },
-  {
-    "Id": 4,
-    "Pessoa": {
-      "Id": 4,
-      "Nome": "Jose",
-      "Email": "fdfsfd",
-      "Telefone": "432432",
-      "DocumentoIdentidade": "543543"
-    },
-    "Alojamento": {
-      "Id": 1,
-      "Nome": "Hotel Melia",
-      "Tipo": "Hostel",
-      "Localizacao": "Braga",
-      "PrecoPorNoite": 45.0,
-      "CapacidadeMaxima": 2,
-      "Disponivel": true
-    },
-    "DataCheckIn": "2024-10-23T00:00:00",
-    "DataCheckOut": "2024-10-24T00:00:00",
-    "ValorTotal": 45.0,
+    "DataCheckIn": "2024-10-27T00:00:00",
+    "DataCheckOut": "2024-10-29T00:00:00",
+    "ValorTotal": 400.0,
     "CheckIN": false
   }
 ]

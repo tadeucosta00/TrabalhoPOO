@@ -72,16 +72,20 @@ namespace ProjetoPo
             public int Estrelas { get; set; }
             public bool Photos { get; set; }
             public List<string> Comodidades { get; set; }
+            public string Local { get; set; }
 
-            public Alojamento() {
+
+            public Alojamento()
+            {
                 Comodidades = new List<string>();
             }
 
-            public Alojamento(int id, string nome, string tipo, string desc, string lat, string log, double precoPorNoite, int capacidadeMaxima, bool disponivel, int estrelas, bool photos, List<string> comodidades)
+            public Alojamento(int id, string nome, string local, string tipo, string desc, string lat, string log, double precoPorNoite, int capacidadeMaxima, bool disponivel, int estrelas, bool photos, List<string> comodidades)
                 : base(id)
             {
                 Nome = nome;
                 Tipo = tipo;
+                Local = local;
                 Desc = desc;
                 Lat = lat;
                 Log = log;
@@ -532,7 +536,7 @@ namespace ProjetoPo
 
         private void SavePhotos(int id, List<string> arquivos)
         {
-            string pastaDestino = @"C:\Users\Pedro\Documents\GitHub\TrabalhoPOO\uploads\"+id;
+            string pastaDestino = @"C:\Users\Pedro\Documents\GitHub\TrabalhoPOO\uploads\" + id;
             try
             {
                 if (!Directory.Exists(pastaDestino))
@@ -585,6 +589,12 @@ namespace ProjetoPo
             string log = textBox12.Text;
             string precoPorNoite = textBox5.Text;
             string estrelas = textBox13.Text;
+            string local = textBox14.Text;
+
+            
+
+
+
             List<string> comodidadesSelecionadas = new List<string>();
             foreach (var item in checkedListBox1.CheckedItems)
             {
@@ -594,7 +604,7 @@ namespace ProjetoPo
             bool disponivel = comboBox1.Text.Equals("Sim", StringComparison.OrdinalIgnoreCase);
             bool photos = false;
 
-            List<string> arquivosSelecionados = new List<string>(); 
+            List<string> arquivosSelecionados = new List<string>();
             foreach (string arquivo in listBoxFotosAlojamento.Items)
             {
                 arquivosSelecionados.Add(arquivo);
@@ -634,6 +644,8 @@ namespace ProjetoPo
                         alojamentoExistente.Comodidades = comodidadesSelecionadas;
                         alojamentoExistente.Photos = photos;
                         alojamentoExistente.Estrelas = int.Parse(estrelas);
+                        alojamentoExistente.Local = local;
+
 
                         if (arquivosSelecionados.Count > 0)
                         {
@@ -652,7 +664,7 @@ namespace ProjetoPo
             }
             else
             {
-                int contador = alojamentos.Count + 1; 
+                int contador = alojamentos.Count + 1;
 
                 Alojamento novoAlojamento = new Alojamento
                 {
@@ -668,6 +680,7 @@ namespace ProjetoPo
                     Comodidades = comodidadesSelecionadas,
                     Photos = photos,
                     Estrelas = int.Parse(estrelas),
+                    Local = local,
                 };
                 if (arquivosSelecionados.Count > 0)
                 {
@@ -816,5 +829,7 @@ namespace ProjetoPo
                 webView21.Source = new Uri("https://www.openstreetmap.org/?mlat=" + textBox6.Text + "&mlon=" + textBox12.Text + "#map=19");
             }
         }
+
+       
     }
 }

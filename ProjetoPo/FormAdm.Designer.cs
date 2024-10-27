@@ -77,6 +77,10 @@
             label20 = new Label();
             listView2 = new ListView();
             panel4 = new Panel();
+            textBox14 = new TextBox();
+            label34 = new Label();
+            richTextBox1 = new RichTextBox();
+            label33 = new Label();
             listBoxFotosAlojamento = new ListBox();
             label32 = new Label();
             button8 = new Button();
@@ -102,8 +106,6 @@
             textBox8 = new TextBox();
             label9 = new Label();
             listViewAlojamentos = new ListView();
-            label33 = new Label();
-            richTextBox1 = new RichTextBox();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
@@ -244,7 +246,7 @@
             panel3.Location = new Point(3, 11);
             panel3.Margin = new Padding(3, 2, 3, 2);
             panel3.Name = "panel3";
-            panel3.Size = new Size(696, 498);
+            panel3.Size = new Size(696, 453);
             panel3.TabIndex = 2;
             panel3.Paint += panel3_Paint;
             // 
@@ -650,6 +652,8 @@
             // 
             panel4.AutoScroll = true;
             panel4.AutoScrollMargin = new Size(0, 100);
+            panel4.Controls.Add(textBox14);
+            panel4.Controls.Add(label34);
             panel4.Controls.Add(richTextBox1);
             panel4.Controls.Add(label33);
             panel4.Controls.Add(listBoxFotosAlojamento);
@@ -683,6 +687,43 @@
             panel4.Name = "panel4";
             panel4.Size = new Size(971, 777);
             panel4.TabIndex = 21;
+            // 
+            // textBox14
+            // 
+            textBox14.Font = new Font("Segoe UI", 15F);
+            textBox14.Location = new Point(92, 356);
+            textBox14.Margin = new Padding(3, 2, 3, 2);
+            textBox14.Name = "textBox14";
+            textBox14.Size = new Size(200, 34);
+            textBox14.TabIndex = 40;
+            // 
+            // label34
+            // 
+            label34.AutoSize = true;
+            label34.Font = new Font("Segoe UI", 15F);
+            label34.Location = new Point(21, 359);
+            label34.Name = "label34";
+            label34.Size = new Size(61, 28);
+            label34.TabIndex = 39;
+            label34.Text = "Local:";
+            // 
+            // richTextBox1
+            // 
+            richTextBox1.Location = new Point(321, 642);
+            richTextBox1.Name = "richTextBox1";
+            richTextBox1.Size = new Size(617, 96);
+            richTextBox1.TabIndex = 38;
+            richTextBox1.Text = "";
+            // 
+            // label33
+            // 
+            label33.AutoSize = true;
+            label33.Font = new Font("Segoe UI", 15F);
+            label33.Location = new Point(321, 609);
+            label33.Name = "label33";
+            label33.Size = new Size(100, 28);
+            label33.TabIndex = 37;
+            label33.Text = "Descrição:";
             // 
             // listBoxFotosAlojamento
             // 
@@ -719,7 +760,7 @@
             // 
             checkedListBox1.FormattingEnabled = true;
             checkedListBox1.Items.AddRange(new object[] { "Piscina", "Ginasio", "Estacionamento", "Wi-Fi gratuito", "Lavanderia", "Spa" });
-            checkedListBox1.Location = new Point(21, 779);
+            checkedListBox1.Location = new Point(21, 809);
             checkedListBox1.Name = "checkedListBox1";
             checkedListBox1.Size = new Size(155, 130);
             checkedListBox1.TabIndex = 33;
@@ -727,7 +768,7 @@
             // textBox13
             // 
             textBox13.Font = new Font("Segoe UI", 15F);
-            textBox13.Location = new Point(106, 676);
+            textBox13.Location = new Point(106, 720);
             textBox13.Margin = new Padding(3, 2, 3, 2);
             textBox13.Name = "textBox13";
             textBox13.Size = new Size(181, 34);
@@ -737,7 +778,7 @@
             // 
             label31.AutoSize = true;
             label31.Font = new Font("Segoe UI", 15F);
-            label31.Location = new Point(19, 676);
+            label31.Location = new Point(19, 720);
             label31.Name = "label31";
             label31.Size = new Size(81, 28);
             label31.TabIndex = 31;
@@ -747,7 +788,7 @@
             // 
             label30.AutoSize = true;
             label30.Font = new Font("Segoe UI", 12F);
-            label30.Location = new Point(21, 755);
+            label30.Location = new Point(21, 785);
             label30.Name = "label30";
             label30.Size = new Size(109, 21);
             label30.TabIndex = 30;
@@ -756,7 +797,7 @@
             // textBox12
             // 
             textBox12.Font = new Font("Segoe UI", 15F);
-            textBox12.Location = new Point(101, 621);
+            textBox12.Location = new Point(101, 665);
             textBox12.Margin = new Padding(3, 2, 3, 2);
             textBox12.Name = "textBox12";
             textBox12.Size = new Size(188, 34);
@@ -767,7 +808,7 @@
             // 
             label29.AutoSize = true;
             label29.Font = new Font("Segoe UI", 15F);
-            label29.Location = new Point(21, 621);
+            label29.Location = new Point(21, 665);
             label29.Name = "label29";
             label29.Size = new Size(60, 28);
             label29.TabIndex = 28;
@@ -786,7 +827,7 @@
             comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox2.Font = new Font("Segoe UI", 15F);
             comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(101, 521);
+            comboBox2.Location = new Point(101, 565);
             comboBox2.Margin = new Padding(3, 2, 3, 2);
             comboBox2.Name = "comboBox2";
             comboBox2.Size = new Size(190, 36);
@@ -796,7 +837,7 @@
             // 
             label13.AutoSize = true;
             label13.Font = new Font("Segoe UI", 15F);
-            label13.Location = new Point(19, 410);
+            label13.Location = new Point(19, 454);
             label13.Name = "label13";
             label13.Size = new Size(108, 28);
             label13.TabIndex = 25;
@@ -807,7 +848,7 @@
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.Font = new Font("Segoe UI", 15F);
             comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(156, 408);
+            comboBox1.Location = new Point(156, 452);
             comboBox1.Margin = new Padding(3, 2, 3, 2);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(133, 36);
@@ -816,7 +857,7 @@
             // textBox9
             // 
             textBox9.Font = new Font("Segoe UI", 15F);
-            textBox9.Location = new Point(156, 461);
+            textBox9.Location = new Point(156, 505);
             textBox9.Margin = new Padding(3, 2, 3, 2);
             textBox9.Name = "textBox9";
             textBox9.Size = new Size(133, 34);
@@ -826,7 +867,7 @@
             // 
             label12.AutoSize = true;
             label12.Font = new Font("Segoe UI", 15F);
-            label12.Location = new Point(19, 461);
+            label12.Location = new Point(19, 505);
             label12.Name = "label12";
             label12.Size = new Size(118, 28);
             label12.TabIndex = 22;
@@ -858,7 +899,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 15F);
-            label6.Location = new Point(19, 521);
+            label6.Location = new Point(19, 565);
             label6.Name = "label6";
             label6.Size = new Size(55, 28);
             label6.TabIndex = 19;
@@ -867,7 +908,7 @@
             // textBox5
             // 
             textBox5.Font = new Font("Segoe UI", 15F);
-            textBox5.Location = new Point(90, 357);
+            textBox5.Location = new Point(90, 401);
             textBox5.Margin = new Padding(3, 2, 3, 2);
             textBox5.Name = "textBox5";
             textBox5.Size = new Size(200, 34);
@@ -877,7 +918,7 @@
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI", 15F);
-            label7.Location = new Point(19, 360);
+            label7.Location = new Point(19, 404);
             label7.Name = "label7";
             label7.Size = new Size(65, 28);
             label7.TabIndex = 17;
@@ -886,7 +927,7 @@
             // textBox6
             // 
             textBox6.Font = new Font("Segoe UI", 15F);
-            textBox6.Location = new Point(101, 567);
+            textBox6.Location = new Point(101, 611);
             textBox6.Margin = new Padding(3, 2, 3, 2);
             textBox6.Name = "textBox6";
             textBox6.Size = new Size(188, 34);
@@ -897,7 +938,7 @@
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Segoe UI", 15F);
-            label8.Location = new Point(19, 567);
+            label8.Location = new Point(19, 611);
             label8.Name = "label8";
             label8.Size = new Size(42, 28);
             label8.TabIndex = 15;
@@ -931,24 +972,6 @@
             listViewAlojamentos.TabIndex = 11;
             listViewAlojamentos.UseCompatibleStateImageBehavior = false;
             listViewAlojamentos.SelectedIndexChanged += listViewAlojamentos_SelectedIndexChanged;
-            // 
-            // label33
-            // 
-            label33.AutoSize = true;
-            label33.Font = new Font("Segoe UI", 15F);
-            label33.Location = new Point(321, 609);
-            label33.Name = "label33";
-            label33.Size = new Size(100, 28);
-            label33.TabIndex = 37;
-            label33.Text = "Descrição:";
-            // 
-            // richTextBox1
-            // 
-            richTextBox1.Location = new Point(321, 642);
-            richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(617, 96);
-            richTextBox1.TabIndex = 38;
-            richTextBox1.Text = "";
             // 
             // FormAdm
             // 
@@ -1056,5 +1079,7 @@
         private ListBox listBoxFotosAlojamento;
         private RichTextBox richTextBox1;
         private Label label33;
+        private TextBox textBox14;
+        private Label label34;
     }
 }

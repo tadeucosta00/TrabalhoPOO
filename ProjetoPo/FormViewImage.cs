@@ -22,7 +22,5 @@ namespace ProjetoPo
             pictureBox1.Image = System.Drawing.Image.FromFile(imagem);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
         }
-
-        
     }
 }

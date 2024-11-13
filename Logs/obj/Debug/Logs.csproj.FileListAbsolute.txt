@@ -1,0 +1,6 @@
+C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\Logs\bin\Debug\Logs.dll
+C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\Logs\bin\Debug\Logs.pdb
+C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\Logs\obj\Debug\Logs.csproj.AssemblyReference.cache
+C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\Logs\obj\Debug\Logs.csproj.CoreCompileInputs.cache
+C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\Logs\obj\Debug\Logs.dll
+C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\Logs\obj\Debug\Logs.pdb

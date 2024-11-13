@@ -19,6 +19,9 @@
     <Compile Update="Listitem.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="ListviewCheckIn.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="Logincs.cs">
       <SubType>Form</SubType>
     </Compile>

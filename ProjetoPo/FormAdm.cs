@@ -8,6 +8,9 @@ using static ProjetoPo.FormAdm;
 using static System.Windows.Forms.DataFormats;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using ProjetoPo.Models;
+using System.Text;
+using static ProjetoPo.Form1;
 
 namespace ProjetoPo
 {
@@ -18,135 +21,35 @@ namespace ProjetoPo
             InitializeComponent();
             panel3.Visible = false;
             panel4.Visible = false;
-            LoadData();
+            LoadPessoas();
             LoadAlojamentos();
             LoadReservas();
             LoadDashboard();
         }
 
-        public class EntidadeBase
-        {
-            public int Id { get; set; }
-
-            // Construtor padrão
-            public EntidadeBase() { }
-
-            // Construtor que permite definir o Id
-            public EntidadeBase(int id)
-            {
-                Id = id;
-            }
-        }
-
-        public class Pessoa : EntidadeBase
-        {
-            public string Nome { get; set; }
-            public string Email { get; set; }
-            public string Telefone { get; set; }
-            public string DocumentoIdentidade { get; set; }
-
-            // Construtor padrão
-            public Pessoa() { }
-
-            // Construtor que permite definir todas as propriedades
-            public Pessoa(int id, string nome, string email, string telefone, string documentoIdentidade)
-                : base(id)
-            {
-                Nome = nome;
-                Email = email;
-                Telefone = telefone;
-                DocumentoIdentidade = documentoIdentidade;
-            }
-        }
-
-        public class Alojamento : EntidadeBase
-        {
-            public string Nome { get; set; }
-            public string Tipo { get; set; }
-            public string Desc { get; set; }
-            public string Lat { get; set; }
-            public string Log { get; set; }
-            public double PrecoPorNoite { get; set; }
-            public int CapacidadeMaxima { get; set; }
-            public bool Disponivel { get; set; }
-            public int Estrelas { get; set; }
-            public bool Photos { get; set; }
-            public List<string> Comodidades { get; set; }
-            public string Local { get; set; }
-
-
-            public Alojamento()
-            {
-                Comodidades = new List<string>();
-            }
-
-            public Alojamento(int id, string nome, string local, string tipo, string desc, string lat, string log, double precoPorNoite, int capacidadeMaxima, bool disponivel, int estrelas, bool photos, List<string> comodidades)
-                : base(id)
-            {
-                Nome = nome;
-                Tipo = tipo;
-                Local = local;
-                Desc = desc;
-                Lat = lat;
-                Log = log;
-                PrecoPorNoite = precoPorNoite;
-                CapacidadeMaxima = capacidadeMaxima;
-                Disponivel = disponivel;
-                Estrelas = estrelas;
-                Photos = photos;
-                Comodidades = comodidades;
-            }
-        }
-
-        public class Reserva : EntidadeBase
-        {
-            public Pessoa Pessoa { get; set; }
-            public Alojamento Alojamento { get; set; }
-            public DateTime DataCheckIn { get; set; }
-            public DateTime DataCheckOut { get; set; }
-            public double ValorTotal { get; set; }
-            public bool CheckIN { get; set; }
-
-            // Construtor padrão
-            public Reserva() { }
-
-            // Construtor que permite definir todas as propriedades
-            public Reserva(int id, Pessoa pessoa, Alojamento alojamento, DateTime dataCheckIn, DateTime dataCheckOut, double valorTotal, bool checkIn)
-                : base(id)
-            {
-                Pessoa = pessoa;
-                Alojamento = alojamento;
-                DataCheckIn = dataCheckIn;
-                DataCheckOut = dataCheckOut;
-                ValorTotal = valorTotal;
-                CheckIN = checkIn;
-            }
-        }
-
-        private void LoadData()
+        private void LoadPessoas()
         {
             listView1.Items.Clear();
-
-            string filePath = @"c:\Users\Pedro\Documents\GitHub\TrabalhoPOO\clientes.json";
+            comboBox4.Items.Clear();
 
             try
             {
-                string jsonData = File.ReadAllText(filePath);
+                List<Models.Pessoa> pessoas = Models.Pessoa.GetAll();
 
-                List<Pessoa> pessoas = JsonConvert.DeserializeObject<List<Pessoa>>(jsonData);
+                if (listView1.Columns.Count == 0)
+                {
+                    listView1.View = View.Details;
+                    listView1.FullRowSelect = true;
 
+                    listView1.Columns.Add("ID", 50);
+                    listView1.Columns.Add("Nome", 100);
+                    listView1.Columns.Add("Email", 250);
+                    listView1.Columns.Add("Telefone", 100);
+                    listView1.Columns.Add("Documento", 100);
+                    listView1.Columns.Add("Permissão", 100);
 
-                listView1.View = View.Details;
-                listView1.FullRowSelect = true;
+                }
 
-                // Adiciona as colunas à ListView
-                listView1.Columns.Add("ID", 50);
-                listView1.Columns.Add("Nome", 100);
-                listView1.Columns.Add("Email", 250);
-                listView1.Columns.Add("Telefone", 100);
-                listView1.Columns.Add("Documento", 100);
-
-                // Adiciona os dados na ListView
                 foreach (var pessoa in pessoas)
                 {
                     ListViewItem item = new ListViewItem(pessoa.Id.ToString());
@@ -154,19 +57,20 @@ namespace ProjetoPo
                     item.SubItems.Add(pessoa.Email);
                     item.SubItems.Add(pessoa.Telefone);
                     item.SubItems.Add(pessoa.DocumentoIdentidade);
-
+                    if (pessoa.Adm == true)
+                    {
+                        item.SubItems.Add("Admin");
+                    }
+                    else
+                    {
+                        item.SubItems.Add("Normal");
+                    }
                     listView1.Items.Add(item);
-                    comboBox4.Items.Add(pessoa.Nome);
+                    comboBox4.DataSource = pessoas;
+                    comboBox4.DisplayMember = "Nome";
+                    comboBox4.ValueMember = "Id";
 
                 }
-            }
-            catch (FileNotFoundException)
-            {
-                MessageBox.Show("O ficheiro JSON não foi encontrado.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (JsonException)
-            {
-                MessageBox.Show("Erro ao ler o ficheiro JSON.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
@@ -174,55 +78,48 @@ namespace ProjetoPo
             }
         }
 
-
         private void LoadAlojamentos()
         {
-
             listViewAlojamentos.Items.Clear();
-
-
-            string filePath = @"c:\Users\Pedro\Documents\GitHub\TrabalhoPOO\alojamentos.json";
+            comboBox3.Items.Clear();
 
             try
             {
-                string jsonData = File.ReadAllText(filePath);
-                List<Alojamento> alojamentos = JsonConvert.DeserializeObject<List<Alojamento>>(jsonData);
+                List<Models.Alojamento> alojamentos = Models.Alojamento.GetAlojamentosFromDB();
 
-                listViewAlojamentos.View = View.Details;
-                listViewAlojamentos.FullRowSelect = true;
-
-                listViewAlojamentos.Columns.Add("ID", 50);
-                listViewAlojamentos.Columns.Add("Nome", 100);
-                listViewAlojamentos.Columns.Add("Tipo", 100);
-                listViewAlojamentos.Columns.Add("Localizacao", 100);
-                listViewAlojamentos.Columns.Add("Preço por Noite", 100);
-                listViewAlojamentos.Columns.Add("Capacidade Max", 120);
-                listViewAlojamentos.Columns.Add("Disponível", 100);
-                if (alojamentos != null)
+                if (listViewAlojamentos.Columns.Count == 0)
                 {
-                    foreach (var alojamento in alojamentos)
-                    {
-                        ListViewItem item = new ListViewItem(alojamento.Id.ToString());
-                        item.SubItems.Add(alojamento.Nome);
-                        item.SubItems.Add(alojamento.Tipo);
-                        item.SubItems.Add(alojamento.Lat);
-                        item.SubItems.Add(alojamento.Log);
-                        item.SubItems.Add(alojamento.PrecoPorNoite.ToString("F2"));
-                        item.SubItems.Add(alojamento.CapacidadeMaxima.ToString());
-                        item.SubItems.Add(alojamento.Disponivel ? "Sim" : "Não");
+                    listViewAlojamentos.View = View.Details;
+                    listViewAlojamentos.FullRowSelect = true;
 
-                        listViewAlojamentos.Items.Add(item);
-                        comboBox3.Items.Add(alojamento.Nome);
-                    }
+                    listViewAlojamentos.Columns.Add("ID", 100);
+                    listViewAlojamentos.Columns.Add("Nome", 150);
+                    listViewAlojamentos.Columns.Add("Tipo", 150);
+                    listViewAlojamentos.Columns.Add("Latitude", 150);
+                    listViewAlojamentos.Columns.Add("Longitude", 150);
+                    listViewAlojamentos.Columns.Add("Localizacao", 150);
+                    listViewAlojamentos.Columns.Add("Preço por Noite", 150);
+                    listViewAlojamentos.Columns.Add("Capacidade Max", 150);
+                    listViewAlojamentos.Columns.Add("Estrelas", 150);
                 }
-            }
-            catch (FileNotFoundException)
-            {
-                MessageBox.Show("O ficheiro JSON de alojamentos não foi encontrado.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (JsonException)
-            {
-                MessageBox.Show("Erro ao ler o ficheiro JSON de alojamentos.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                foreach (var alojamento in alojamentos)
+                {
+                    ListViewItem item = new ListViewItem(alojamento.Id.ToString());
+                    item.SubItems.Add(alojamento.Nome);
+                    item.SubItems.Add(alojamento.Tipo.ToString());
+                    item.SubItems.Add(alojamento.Latitude);
+                    item.SubItems.Add(alojamento.Longitude);
+                    item.SubItems.Add(alojamento.Local);
+                    item.SubItems.Add(alojamento.PrecoPorNoite.ToString("F2") + "€");
+                    item.SubItems.Add(alojamento.CapacidadeMaxima.ToString());
+                    item.SubItems.Add(alojamento.Estrelas.ToString());
+                    listViewAlojamentos.Items.Add(item);
+
+                    comboBox3.DataSource = alojamentos;
+                    comboBox3.DisplayMember = "Nome";
+                    comboBox3.ValueMember = "Id";
+                }
             }
             catch (Exception ex)
             {
@@ -235,23 +132,20 @@ namespace ProjetoPo
             listView2.Columns.Clear();
             listView2.Items.Clear();
 
-            string filePath = @"c:\Users\Pedro\Documents\GitHub\TrabalhoPOO\reservas.json";
-
             try
             {
-                string jsonData = File.ReadAllText(filePath);
-                List<Reserva> reservas = JsonConvert.DeserializeObject<List<Reserva>>(jsonData);
+                List<Models.Reserva> reservas = Models.Reserva.GetAllReservasFromDB();
 
                 listView2.View = View.Details;
                 listView2.FullRowSelect = true;
 
-                listView2.Columns.Add("ID", 50);
-                listView2.Columns.Add("Nome Alojamento", 130);
-                listView2.Columns.Add("Nome Cliente", 130);
-                listView2.Columns.Add("Data Check-In", 130);
-                listView2.Columns.Add("Data Check-Out", 130);
-                listView2.Columns.Add("Valor", 120);
-                listView2.Columns.Add("Check-In", 100);
+                listView2.Columns.Add("ID", 100);
+                listView2.Columns.Add("Nome Alojamento", 150);
+                listView2.Columns.Add("Nome Cliente", 150);
+                listView2.Columns.Add("Data Check-In", 150);
+                listView2.Columns.Add("Data Check-Out", 150);
+                listView2.Columns.Add("Valor", 130);
+                listView2.Columns.Add("Check-In", 150);
 
                 foreach (var reserva in reservas)
                 {
@@ -260,50 +154,38 @@ namespace ProjetoPo
                     item.SubItems.Add(reserva.Pessoa.Nome);
                     item.SubItems.Add(reserva.DataCheckIn.ToString("dd/MM/yyyy"));
                     item.SubItems.Add(reserva.DataCheckOut.ToString("dd/MM/yyyy"));
-                    item.SubItems.Add(reserva.ValorTotal.ToString());
+                    item.SubItems.Add(reserva.ValorTotal.ToString("F2") + "€");
+                    item.SubItems.Add(reserva.CheckIN ? "Sim" : "Não");
+
                     listView2.Items.Add(item);
-                    //comboBox3.Items.Add(reserva.Nome);
                 }
 
-            }
-            catch (FileNotFoundException)
-            {
-                MessageBox.Show("O ficheiro JSON de alojamentos não foi encontrado.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (JsonException)
-            {
-                MessageBox.Show("Erro ao ler o ficheiro JSON de alojamentos.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                comboBox6.Items.Clear();
+                for (int i = 1; i <= 5; i++)
+                {
+                    comboBox6.Items.Add(i);
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ocorreu um erro: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ocorreu um erro ao carregar as reservas: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void LoadDashboard()
         {
             listView3.Columns.Clear();
             listView3.Items.Clear();
 
-            string filePath = @"c:\Users\Pedro\Documents\GitHub\TrabalhoPOO\reservas.json";
-            string filePathClientes = @"c:\Users\Pedro\Documents\GitHub\TrabalhoPOO\clientes.json";
-            string filePathAlojamentos = @"c:\Users\Pedro\Documents\GitHub\TrabalhoPOO\alojamentos.json";
-
             double valorTotal = 0;
             int valorReservas = 0;
-            int valorAlojamentos = 0;
-
 
             try
             {
-                string jsonData = File.ReadAllText(filePath);
-                List<Reserva> reservas = JsonConvert.DeserializeObject<List<Reserva>>(jsonData);
-
-                string jsonDataClientes = File.ReadAllText(filePathClientes);
-                List<Pessoa> pessoas = JsonConvert.DeserializeObject<List<Pessoa>>(jsonData);
-
-                string jsonDataAlojamentos = File.ReadAllText(filePathAlojamentos);
-                List<Alojamento> alojamentos = JsonConvert.DeserializeObject<List<Alojamento>>(jsonDataAlojamentos);
+                List<Models.Reserva> reservas = Models.Reserva.GetAllReservasFromDB();
+                List<Models.Pessoa> pessoas = Models.Pessoa.GetAll();
+                List<Models.Alojamento> alojamentos = Models.Alojamento.GetAlojamentosFromDB();
 
                 listView3.View = View.Details;
                 listView3.FullRowSelect = true;
@@ -324,30 +206,24 @@ namespace ProjetoPo
                     item.SubItems.Add(reserva.Pessoa.Nome);
                     item.SubItems.Add(reserva.DataCheckIn.ToString("dd/MM/yyyy"));
                     item.SubItems.Add(reserva.DataCheckOut.ToString("dd/MM/yyyy"));
-                    item.SubItems.Add(reserva.ValorTotal.ToString());
+                    item.SubItems.Add(reserva.ValorTotal.ToString("F2") + "€");
+                    item.SubItems.Add(reserva.CheckIN ? "Sim" : "Não");
+
                     listView3.Items.Add(item);
                     valorReservas++;
                 }
 
-                label28.Text = pessoas.Count + " Clientes";
-                //label27.Text = alojamentos.Count + " Alojamentos";
-
-                label26.Text = valorReservas + " Reservas";
-                label25.Text = valorTotal + "€";
-            }
-            catch (FileNotFoundException)
-            {
-                MessageBox.Show("O ficheiro JSON de alojamentos não foi encontrado.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (JsonException)
-            {
-                MessageBox.Show("Erro ao ler o ficheiro JSON de alojamentos.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                label28.Text = pessoas.Count.ToString();
+                label27.Text = alojamentos.Count.ToString();
+                label26.Text = valorReservas.ToString();
+                label25.Text = valorTotal.ToString("F2") + "€";
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Ocorreu um erro: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
 
 
@@ -363,6 +239,7 @@ namespace ProjetoPo
 
         private void button2_Click(object sender, EventArgs e)
         {
+
             panel3.Visible = false;
             panel4.Visible = false;
             panel5.Visible = true;
@@ -386,31 +263,57 @@ namespace ProjetoPo
 
         private void button3_Click(object sender, EventArgs e)
         {
-            panel3.Visible = false;
-            panel4.Visible = true;
-            panel5.Visible = false;
-            panel6.Visible = false;
+            foreach (Control control in panel4.Controls)
+            {
+                if (control is System.Windows.Forms.TextBox textBox)
+                {
+                    textBox.Text = "";
+                }
+                if (control is System.Windows.Forms.ComboBox comboBox)
+                {
+                    comboBox.Text = "";
+                }
+                if (control is System.Windows.Forms.RichTextBox richTextBox)
+                {
+                    richTextBox.Text = "";
+                }
 
+            }
+
+            listBoxFotosAlojamento.Items.Clear();
+
+            checkedListBox1.Items.Clear();
+
+            List<Models.Comodidades> comodidades = Models.Comodidades.GetComodidadesFromDB();
+            if (comodidades != null && comodidades.Count > 0)
+            {
+                foreach (var comodidade in comodidades)
+                {
+                    int index = checkedListBox1.Items.Add(comodidade.Nome);
+                }
+            }
+
+
+            comboBox1.Items.Clear();
             comboBox1.Items.Add("Sim");
             comboBox1.Items.Add("Não");
 
-
+            comboBox2.Items.Clear();
             comboBox2.Items.Add("Hotel");
             comboBox2.Items.Add("Hostel");
             comboBox2.Items.Add("Apartamento");
             comboBox2.Items.Add("Casa");
             comboBox2.Items.Add("Resort");
 
+            panel3.Visible = false;
+            panel4.Visible = true;
+            panel5.Visible = false;
+            panel6.Visible = false;
+
             webView21.Source = new Uri("https://www.openstreetmap.org/#map=3/42.29/3.16");
-
-
-
         }
 
-        private void panel3_Paint(object sender, PaintEventArgs e)
-        {
 
-        }
 
         private void listView1_SelectedIndexChanged_1(object sender, EventArgs e)
         {
@@ -423,120 +326,139 @@ namespace ProjetoPo
                 textBox3.Text = selectedItem.SubItems[3].Text;
                 textBox4.Text = selectedItem.SubItems[4].Text;
                 textBox7.Text = selectedItem.SubItems[0].Text;
+                if (selectedItem.SubItems[5].Text == "Admin")
+                {
+                    comboBox5.SelectedIndex = 1;
+                }
+                else
+                {
+                    comboBox5.SelectedIndex = 0;
 
+                }
             }
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            string filePath = @"c:\Users\tadeu\Desktop\POO\ProjetoPo\clientes.json";
             string id = textBox7.Text;
             string nome = textBox1.Text;
             string email = textBox2.Text;
             string telefone = textBox3.Text;
             string documento = textBox4.Text;
 
-            List<Pessoa> pessoas = new List<Pessoa>();
-            if (File.Exists(filePath))
-            {
-                string jsonData = File.ReadAllText(filePath);
-                pessoas = JsonConvert.DeserializeObject<List<Pessoa>>(jsonData);
-            }
-            else
-            {
-                MessageBox.Show("O ficheiro JSON não foi encontrado. Será criado um novo.");
-            }
-
             if (id != "")
             {
-                int id1 = int.Parse(id);
-                Pessoa pessoaExistente = pessoas.FirstOrDefault(p => p.Id == id1);
-                pessoaExistente.Nome = nome;
-                pessoaExistente.Email = email;
-                pessoaExistente.Telefone = telefone;
-                pessoaExistente.DocumentoIdentidade = documento;
+                int pessoaId = int.Parse(id);
+                Models.Pessoa pessoaExistente = Models.Pessoa.GetById(pessoaId);
 
+                if (pessoaExistente != null)
+                {
+                    pessoaExistente.Nome = nome;
+                    pessoaExistente.Email = email;
+                    pessoaExistente.Telefone = telefone;
+                    pessoaExistente.DocumentoIdentidade = documento;
+                    pessoaExistente.Atualizar();
+                    MessageBox.Show("Dados atualizados com sucesso.");
+                }
+                else
+                {
+                    MessageBox.Show("Pessoa não encontrada.");
+                }
             }
             else
             {
-                int contador = pessoas.Count;
-                contador++;
-                Pessoa novaPessoa = new Pessoa
+                byte[] data = Encoding.ASCII.GetBytes(documento);
+                data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
+                string hash = BitConverter.ToString(data).Replace("-", "").ToLower();
+                Models.Pessoa novaPessoa = new Models.Pessoa
                 {
-                    Id = contador,
                     Nome = nome,
                     Email = email,
                     Telefone = telefone,
-                    DocumentoIdentidade = documento
+                    DocumentoIdentidade = documento,
+                    Senha = hash,
+                    Adm = false
                 };
 
-                pessoas.Add(novaPessoa);
-
+                novaPessoa.Salvar();
+                MessageBox.Show("Nova pessoa adicionada com sucesso.");
             }
-
-            string novoJsonData = JsonConvert.SerializeObject(pessoas, Formatting.Indented);
-
-            File.WriteAllText(filePath, novoJsonData);
-
-            MessageBox.Show("Dados atualizados com sucesso.");
-            LoadData();
+            LoadPessoas();
         }
+
 
         private void listViewAlojamentos_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listViewAlojamentos.SelectedItems.Count > 0)
             {
-                ListViewItem selectedItem = listViewAlojamentos.SelectedItems[0];
+                int selectedAlojamentoId = int.Parse(listViewAlojamentos.SelectedItems[0].Text);
 
-                textBox8.Text = selectedItem.SubItems[1].Text;
-                textBox6.Text = selectedItem.SubItems[3].Text;
-                textBox5.Text = selectedItem.SubItems[4].Text;
-                textBox9.Text = selectedItem.SubItems[5].Text;
-                textBox10.Text = selectedItem.SubItems[0].Text;
-                string subItemValuetipo = selectedItem.SubItems[2].Text;
-                if (subItemValuetipo.Equals("Hotel", StringComparison.OrdinalIgnoreCase))
+                Models.Alojamento alojamentoSelecionado = Models.Alojamento.GetAlojamentoById(selectedAlojamentoId);
+
+                if (alojamentoSelecionado == null)
                 {
-                    comboBox2.SelectedIndex = 0;
-                }
-                else if (subItemValuetipo.Equals("Hostel", StringComparison.OrdinalIgnoreCase))
-                {
-                    comboBox2.SelectedIndex = 1;
-                }
-                else if (subItemValuetipo.Equals("Apartamento", StringComparison.OrdinalIgnoreCase))
-                {
-                    comboBox2.SelectedIndex = 2;
-                }
-                else if (subItemValuetipo.Equals("Casa", StringComparison.OrdinalIgnoreCase))
-                {
-                    comboBox2.SelectedIndex = 3;
-                }
-                else if (subItemValuetipo.Equals("Resort", StringComparison.OrdinalIgnoreCase))
-                {
-                    comboBox2.SelectedIndex = 4;
+                    MessageBox.Show("Alojamento não encontrado.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
 
-                string subItemValuedisponivel = selectedItem.SubItems[6].Text;
-                if (subItemValuedisponivel.Equals("true", StringComparison.OrdinalIgnoreCase))
+                textBox8.Text = alojamentoSelecionado.Nome;
+                textBox14.Text = alojamentoSelecionado.Local;
+                textBox12.Text = alojamentoSelecionado.Longitude;
+                textBox13.Text = alojamentoSelecionado.Estrelas.ToString();
+                richTextBox1.Text = alojamentoSelecionado.Desc;
+                textBox6.Text = alojamentoSelecionado.Latitude;
+                textBox5.Text = alojamentoSelecionado.PrecoPorNoite.ToString("F2");
+                textBox9.Text = alojamentoSelecionado.CapacidadeMaxima.ToString();
+                textBox10.Text = alojamentoSelecionado.Id.ToString();
+
+                comboBox2.SelectedIndex = (int)alojamentoSelecionado.Tipo - 1;
+
+                comboBox1.SelectedIndex = alojamentoSelecionado.Disponivel ? 0 : 1;
+
+                checkedListBox1.Items.Clear();
+
+                List<Models.Comodidades> comodidades = Models.Comodidades.GetComodidadesFromDB();
+                if (comodidades != null && comodidades.Count > 0)
                 {
-                    comboBox1.SelectedIndex = 1;
+                    foreach (var comodidade in comodidades)
+                    {
+                        int index = checkedListBox1.Items.Add(comodidade.Nome);
+                        foreach (var comodidadesAlojamento in alojamentoSelecionado.Comodidades)
+                        {
+                            if (comodidadesAlojamento == comodidade.Nome)
+                            {
+                                checkedListBox1.SetItemChecked(index, true);
+                            }
+                        }
+                    }
+                }
+
+                webView21.Source = new Uri($"https://www.openstreetmap.org/?mlat={alojamentoSelecionado.Latitude}&mlon={alojamentoSelecionado.Longitude}#map=19");
+
+                listBoxFotosAlojamento.Items.Clear();
+                string pastaDestino = $@"C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\uploads\{alojamentoSelecionado.Id}";
+                if (Directory.Exists(pastaDestino))
+                {
+                    List<string> fotos = new List<string>();
+                    fotos.AddRange(Directory.GetFiles(pastaDestino, "*.jpg"));
+                    fotos.AddRange(Directory.GetFiles(pastaDestino, "*.jpeg"));
+                    fotos.AddRange(Directory.GetFiles(pastaDestino, "*.png"));
+                    foreach (string foto in fotos)
+                    {
+                        listBoxFotosAlojamento.Items.Add(foto);
+                    }
                 }
                 else
                 {
-                    comboBox1.SelectedIndex = 0;
+                    MessageBox.Show("O caminho das fotos não foi encontrado.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
-
-
-                webView21.Source = new Uri("https://www.openstreetmap.org/?mlat=" + selectedItem.SubItems[3].Text + "&mlon=" + selectedItem.SubItems[4].Text + "#map=19");
-
-
-
             }
         }
 
+
         private void SavePhotos(int id, List<string> arquivos)
         {
-            string pastaDestino = @"C:\Users\Pedro\Documents\GitHub\TrabalhoPOO\uploads\" + id;
+            string pastaDestino = @"C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\uploads\" + id;
             try
             {
                 if (!Directory.Exists(pastaDestino))
@@ -580,127 +502,59 @@ namespace ProjetoPo
 
         private void button6_Click(object sender, EventArgs e)
         {
-            string filePath = @"c:\Users\Pedro\Documents\GitHub\TrabalhoPOO\alojamentos.json";
             string id = textBox10.Text;
             string nome = textBox8.Text;
             string desc = richTextBox1.Text;
-            string tipo = comboBox2.Text;
+            string tipoString = comboBox2.Text;
             string lat = textBox6.Text;
             string log = textBox12.Text;
             string precoPorNoite = textBox5.Text;
             string estrelas = textBox13.Text;
             string local = textBox14.Text;
-
-            
-
-
-
-            List<string> comodidadesSelecionadas = new List<string>();
-            foreach (var item in checkedListBox1.CheckedItems)
-            {
-                comodidadesSelecionadas.Add(item.ToString());
-            }
-            string capacidadeMaxima = textBox9.Text;
+            List<string> comodidadesSelecionadas = checkedListBox1.CheckedItems.Cast<string>().ToList();
             bool disponivel = comboBox1.Text.Equals("Sim", StringComparison.OrdinalIgnoreCase);
-            bool photos = false;
+            bool photos = listBoxFotosAlojamento.Items.Count > 0;
 
-            List<string> arquivosSelecionados = new List<string>();
-            foreach (string arquivo in listBoxFotosAlojamento.Items)
+            Models.Alojamento alojamento = new Models.Alojamento
             {
-                arquivosSelecionados.Add(arquivo);
-            }
-            if (arquivosSelecionados.Count > 0)
-            {
-                photos = true;
-            }
+                Id = int.TryParse(id, out int idParsed) ? idParsed : 0,
+                Nome = nome,
+                Desc = desc,
+                Tipo = Enum.TryParse<TipoAlojamento>(tipoString, true, out TipoAlojamento tipo) ? tipo : TipoAlojamento.Hotel, // Valor padrão
+                Latitude = lat,
+                Longitude = log,
+                PrecoPorNoite = double.Parse(precoPorNoite),
+                CapacidadeMaxima = int.Parse(textBox9.Text),
+                Disponivel = disponivel,
+                Estrelas = int.Parse(estrelas),
+                Photos = photos,
+                Local = local,
+                Comodidades = comodidadesSelecionadas
+            };
 
-            List<Alojamento> alojamentos = new List<Alojamento>();
-            if (File.Exists(filePath))
+            bool sucesso;
+            if (alojamento.Id > 0)
             {
-                string jsonData = File.ReadAllText(filePath);
-                alojamentos = JsonConvert.DeserializeObject<List<Alojamento>>(jsonData) ?? new List<Alojamento>();
-            }
-            else
-            {
-                MessageBox.Show("O ficheiro JSON não foi encontrado. Será criado um novo.");
-            }
-
-            if (!string.IsNullOrEmpty(id))
-            {
-                int id1;
-                if (int.TryParse(id, out id1))
-                {
-                    Alojamento alojamentoExistente = alojamentos.FirstOrDefault(p => p.Id == id1);
-                    if (alojamentoExistente != null)
-                    {
-                        alojamentoExistente.Nome = nome;
-                        alojamentoExistente.Tipo = tipo;
-                        alojamentoExistente.Desc = desc;
-                        alojamentoExistente.Lat = lat;
-                        alojamentoExistente.Log = log;
-                        alojamentoExistente.PrecoPorNoite = double.Parse(precoPorNoite);
-                        alojamentoExistente.CapacidadeMaxima = int.Parse(capacidadeMaxima);
-                        alojamentoExistente.Disponivel = disponivel;
-                        alojamentoExistente.Comodidades = comodidadesSelecionadas;
-                        alojamentoExistente.Photos = photos;
-                        alojamentoExistente.Estrelas = int.Parse(estrelas);
-                        alojamentoExistente.Local = local;
-
-
-                        if (arquivosSelecionados.Count > 0)
-                        {
-                            SavePhotos(id1, arquivosSelecionados);
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Alojamento não encontrado.");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("ID inválido. Por favor, insira um número válido.");
-                }
+                sucesso = alojamento.EditarAlojamento();
+                MessageBox.Show(sucesso ? "Alojamento atualizado com sucesso." : "Erro ao atualizar alojamento.");
             }
             else
             {
-                int contador = alojamentos.Count + 1;
-
-                Alojamento novoAlojamento = new Alojamento
-                {
-                    Id = contador,
-                    Nome = nome,
-                    Tipo = tipo,
-                    Desc = desc,
-                    Lat = lat,
-                    Log = log,
-                    PrecoPorNoite = double.Parse(precoPorNoite),
-                    CapacidadeMaxima = int.Parse(capacidadeMaxima),
-                    Disponivel = disponivel,
-                    Comodidades = comodidadesSelecionadas,
-                    Photos = photos,
-                    Estrelas = int.Parse(estrelas),
-                    Local = local,
-                };
-                if (arquivosSelecionados.Count > 0)
-                {
-                    SavePhotos(contador, arquivosSelecionados);
-                }
-                alojamentos.Add(novoAlojamento);
+                sucesso = alojamento.AdicionarAlojamento();
+                MessageBox.Show(sucesso ? "Novo alojamento inserido com sucesso." : "Erro ao inserir alojamento.");
             }
 
-            string novoJsonData = JsonConvert.SerializeObject(alojamentos, Formatting.Indented);
-            File.WriteAllText(filePath, novoJsonData);
-
-            MessageBox.Show("Dados atualizados com sucesso.");
-            LoadAlojamentos();
+            if (sucesso)
+            {
+                LoadAlojamentos();
+            }
         }
 
 
         private void button7_Click(object sender, EventArgs e)
         {
 
-            string filePath = @"c:\Users\Pedro\Documents\GitHub\TrabalhoPOO\reservas.json";
+            string filePath = @"c:\Users\tadeu\Documents\GitHub\TrabalhoPOO\reservas.json";
             string id = textBox11.Text;
             int idCliente = comboBox4.SelectedIndex;
             int idAlojamento = comboBox3.SelectedIndex;
@@ -711,11 +565,11 @@ namespace ProjetoPo
 
             int numeroDeDias = diferenca.Days;
 
-            List<Reserva> reservas = new List<Reserva>();
+            List<Models.Reserva> reservas = new List<Models.Reserva>();
             if (File.Exists(filePath))
             {
                 string jsonData = File.ReadAllText(filePath);
-                reservas = JsonConvert.DeserializeObject<List<Reserva>>(jsonData);
+                reservas = JsonConvert.DeserializeObject<List<Models.Reserva>>(jsonData);
             }
             else
             {
@@ -730,22 +584,22 @@ namespace ProjetoPo
             else
             {
 
-                string filePathPessoas = @"c:\Users\Pedro\Documents\GitHub\TrabalhoPOO\clientes.json";
-                string filePathAlojamentos = @"c:\Users\Pedro\Documents\GitHub\TrabalhoPOO\alojamentos.json";
+                string filePathPessoas = @"c:\Users\tadeu\Documents\GitHub\TrabalhoPOO\clientes.json";
+                string filePathAlojamentos = @"c:\Users\tadeu\Documents\GitHub\TrabalhoPOO\alojamentos.json";
 
-                List<Pessoa> pessoas = new List<Pessoa>();
-                List<Alojamento> alojamentos = new List<Alojamento>();
+                List<Models.Pessoa> pessoas = new List<Models.Pessoa>();
+                List<Models.Alojamento> alojamentos = new List<Models.Alojamento>();
 
                 if (File.Exists(filePathPessoas))
                 {
                     string jsonDataPessoas = File.ReadAllText(filePathPessoas);
-                    pessoas = JsonConvert.DeserializeObject<List<Pessoa>>(jsonDataPessoas);
+                    pessoas = JsonConvert.DeserializeObject<List<Models.Pessoa>>(jsonDataPessoas);
                 }
 
                 if (File.Exists(filePathAlojamentos))
                 {
                     string jsonDataAlojamentos = File.ReadAllText(filePathAlojamentos);
-                    alojamentos = JsonConvert.DeserializeObject<List<Alojamento>>(jsonDataAlojamentos);
+                    alojamentos = JsonConvert.DeserializeObject<List<Models.Alojamento>>(jsonDataAlojamentos);
                 }
 
                 if (pessoas.Count == 0 || alojamentos.Count == 0)
@@ -754,15 +608,15 @@ namespace ProjetoPo
                     return;
                 }
 
-                Pessoa pessoa = pessoas[idCliente];
-                Alojamento alojamento = alojamentos[idAlojamento];
+                Models.Pessoa pessoa = pessoas[idCliente];
+                Models.Alojamento alojamento = alojamentos[idAlojamento];
 
                 double valorTotal = alojamento.PrecoPorNoite * numeroDeDias;
 
 
                 int contador = reservas.Count;
                 contador++;
-                Reserva novaReserva = new Reserva
+                Models.Reserva novaReserva = new Models.Reserva
                 {
                     Id = contador,
                     Pessoa = pessoa,
@@ -830,6 +684,73 @@ namespace ProjetoPo
             }
         }
 
-       
+        private void button9_Click(object sender, EventArgs e)
+        {
+            /*FormClients form1 = new FormClients();
+            form1.Show();
+            this.Hide();*/
+        }
+
+        private void listView2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listView2.SelectedItems.Count > 0)
+            {
+                ListViewItem selectedItem = listView2.SelectedItems[0];
+                textBox11.Text = listView2.SelectedItems[0].Text;
+                Models.Reserva reserva = Models.Reserva.GetReservaById(Int32.Parse(listView2.SelectedItems[0].Text));
+
+                comboBox3.SelectedValue = reserva.Alojamento.Id;
+                comboBox4.SelectedValue = reserva.Pessoa.Id;
+                comboBox6.SelectedItem = reserva.Hospedes;
+
+                dateTimePicker1.Value = reserva.DataCheckIn;
+                dateTimePicker2.Value = reserva.DataCheckOut;
+
+                if (reserva.DataCheckOut < DateTime.Now)
+                {
+                    label37.Visible = true;
+                }
+                else
+                {
+                    label37.Visible = false;
+                }
+
+                if (reserva.CheckIN == false)
+                {
+                    button10.Enabled = true;
+                }
+                else
+                {
+                    button10.Enabled = false;
+                }
+            }
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            string id = textBox11.Text;
+            if (id == "")
+            {
+                MessageBox.Show("Nenhuma reserva selecionada!");
+            }
+
+            Models.Reserva reserva = Models.Reserva.GetReservaById(Int32.Parse(id));
+            if (reserva != null)
+            {
+                if (reserva.CheckIN)
+                {
+                    MessageBox.Show("Check-In já realizado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                reserva.CheckIN = true;
+
+                Models.Reserva.AtualizarReservaNaDB(reserva);
+
+                MessageBox.Show("Check-In realizado com sucesso!", "Informação", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                LoadReservas();
+            }
+        }
     }
 }

@@ -34,18 +34,20 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.Location = new Point(1, 2);
+            pictureBox1.Location = new Point(1, 3);
+            pictureBox1.Margin = new Padding(3, 4, 3, 4);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(432, 358);
+            pictureBox1.Size = new Size(494, 477);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
             // FormViewImage
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(434, 363);
+            ClientSize = new Size(496, 484);
             Controls.Add(pictureBox1);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "FormViewImage";
             Text = "FormViewImage";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

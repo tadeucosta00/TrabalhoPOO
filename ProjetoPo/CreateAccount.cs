@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Logs;
+using MySql.Data.MySqlClient;
+using ProjetoPo.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -39,51 +42,39 @@ namespace ProjetoPo
             data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
             string hash = BitConverter.ToString(data).Replace("-", "").ToLower();
 
-            string filePath = @"C:\Users\Pedro\Documents\GitHub\TrabalhoPOO\clientes.json";
-
-            List<Dictionary<string, object>> clients;
-
-            if (File.Exists(filePath))
+            if (Pessoa.EmailJaExistente(email))
             {
-                string existingData = File.ReadAllText(filePath);
-                clients = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(existingData) ?? new List<Dictionary<string, object>>();
-            }
-            else
-            {
-                clients = new List<Dictionary<string, object>>();
-                File.WriteAllText(filePath, JsonSerializer.Serialize(clients, new JsonSerializerOptions { WriteIndented = true }));
-
+                MessageBox.Show("Este e-mail já está em uso. Por favor, utilize um e-mail diferente.");
+                return;
             }
 
-            if (clients.Any(c => c["Email"].ToString() == email))
+            Pessoa novaPessoa = new Pessoa
             {
-                MessageBox.Show("Este e-mail já está cadastrado. Por favor, use um e-mail diferente.");
-                return; 
-            }
-
-            int nextId = clients.Count + 1;
-
-            var newClient = new Dictionary<string, object>
-            {
-                { "Id", nextId },
-                { "Adm", false },
-                { "Nome", name },
-                { "Email", email },
-                { "Telefone", phone },
-                { "DocumentoIdentidade", documentId },
-                { "Senha", hash }
+                Nome = name,
+                Email = email,
+                Telefone = phone,
+                DocumentoIdentidade = documentId,
+                Senha = hash, 
+                Adm = false
             };
 
-            clients.Add(newClient);
+            try
+            {
+                novaPessoa.Salvar();
 
-            string jsonData = JsonSerializer.Serialize(clients, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(filePath, jsonData);
+                MessageBox.Show("Conta criada com sucesso!");
 
-            MessageBox.Show("Conta criada com sucesso!");
+                Logger logger = new Logger();
+                logger.LogInfo("Conta Criada: " + email);
 
-            Logincs flogin = new Logincs();
-            flogin.Show();
-            this.Hide();
+                Logincs flogin = new Logincs();
+                flogin.Show();
+                this.Hide();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao criar conta: " + ex.Message);
+            }
         }
     }
 }

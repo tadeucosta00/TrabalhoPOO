@@ -1,6 +1,7 @@
-💼 Trabalho POO 💼
-Nome: Pedro Tadeu
-Numero: 20471
+Alojamentos Turísticos 💼
+Desenvolvido por: Pedro Tadeu
+Número: 20471
 Curso: EsiPl
 
-Gestão de alojamentos turisticos: sistema que permita a gestão de alojamentos turiısticos.
+📖 Descrição do Projeto
+Este projeto consiste em um sistema de gestão de alojamentos turísticos, desenvolvido para a disciplina de Programação Orientada a Objetos (POO).

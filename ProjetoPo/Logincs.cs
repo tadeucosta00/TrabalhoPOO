@@ -10,6 +10,10 @@ using MySql.Data.MySqlClient;
 using System.Diagnostics;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using System.Security.Policy;
+using IronPython.Hosting;
+using Microsoft.Scripting.Hosting;
+using Microsoft.VisualBasic.ApplicationServices;
+using static Community.CsharpSqlite.Sqlite3;
 
 namespace ProjetoPo
 {
@@ -30,14 +34,14 @@ namespace ProjetoPo
             data = new SHA256Managed().ComputeHash(data);
             string hash = BitConverter.ToString(data).Replace("-", "").ToLower();
 
-            Pessoa usuario = ValidarLogin(email, hash);
+            Pessoa utilizador = ValidarLogin(email, hash);
 
-            if (usuario != null)
+            if (utilizador != null)
             {
-                PessoaManager.Instance.AdicionarPessoa(usuario);
+                PessoaManager.Instance.AdicionarPessoa(utilizador);
 
                 FormClients form1 = new FormClients();
-                logger.LogInfo("Login bem-sucedido para o Usuário ID: " + usuario.Id);
+                logger.LogInfo("Login bem-sucedido para o Usuário ID: " + utilizador.Id);
 
                 form1.Show();
                 this.Hide();
@@ -89,19 +93,19 @@ namespace ProjetoPo
             }
         }
 
+
         private void button3_Click(object sender, EventArgs e)
         {
-            panel3.Visible = true;
-            string scriptPath = @"C:\Users\tadeu\Desktop\te\verify.py";
-            string pythonPath = @"C:\Users\tadeu\AppData\Local\Microsoft\WindowsApps\python.exe";
+            string pythonPath = @"C:\Users\tadeu\AppData\Local\Microsoft\WindowsApps\python.exe";  
+            string scriptPath = @"C:\Users\tadeu\Desktop\te\verify.py";  
 
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
                 FileName = pythonPath,
-                Arguments = $"\"{scriptPath}\"",
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
+                Arguments = scriptPath,  
+                RedirectStandardOutput = true,  
+                RedirectStandardError = true,  
+                UseShellExecute = false,  
                 CreateNoWindow = true
             };
 
@@ -109,46 +113,36 @@ namespace ProjetoPo
             {
                 using (Process process = Process.Start(startInfo))
                 {
-                    process.WaitForExit();
-
-                    string result = process.StandardOutput.ReadToEnd();
-                    string error = process.StandardError.ReadToEnd();
-
-                    if (!string.IsNullOrEmpty(error))
+                    process.OutputDataReceived += (sender, e) =>
                     {
-                        MessageBox.Show("Erro ao executar o script Python: " + error);
-                        return;
-                    }
-
-                    if (int.TryParse(result.Trim(), out int userId))
-                    {
-                        panel3.Visible = false;
-
-                        Pessoa usuario = Pessoa.GetById(userId);
-
-                        if (usuario != null)
+                        if (e.Data != null)
                         {
-                            PessoaManager.Instance.AdicionarPessoa(usuario);
+                            MessageBox.Show(e.Data);
+                            Console.WriteLine("Output: " + e.Data);  
                         }
+                    };
 
-                        FormClients form1 = new FormClients();
-                        form1.Show();
-                        this.Hide();
-                    }
-                    else
+                    // Lê erros do script Python (se houver)
+                    process.ErrorDataReceived += (sender, e) =>
                     {
-                        panel3.Visible = false;
-                        MessageBox.Show("Pessoa não reconhecida.");
-                    }
+                        if (e.Data != null)
+                        {
+                            Console.WriteLine("Error: " + e.Data);  
+                        }
+                    };
+
+                    process.BeginOutputReadLine();
+                    process.BeginErrorReadLine();
+
+                    process.WaitForExit();
                 }
             }
             catch (Exception ex)
             {
-                panel3.Visible = false;
-                MessageBox.Show("Erro ao executar o script: " + ex.Message);
+                Console.WriteLine("Erro ao executar o script Python: " + ex.Message);
             }
+        
         }
-
 
 
     }

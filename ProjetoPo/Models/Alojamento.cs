@@ -152,7 +152,8 @@ namespace ProjetoPo.Models
 
             return alojamento;
         }
-        public bool AdicionarAlojamento()
+
+        public int AdicionarAlojamento()
         {
             try
             {
@@ -160,10 +161,11 @@ namespace ProjetoPo.Models
                 {
                     conn.Open();
                     string query = @"
-                INSERT INTO alojamento (Nome, Descricao, Tipo, Latitude, Longitude, PrecoPorNoite, CapacidadeMaxima,
-                                        Disponivel, Estrelas, Photos, Local, Comodidades)
-                VALUES (@Nome, @Desc, @Tipo, @Latitude, @Longitude, @PrecoPorNoite, @CapacidadeMaxima, @Disponivel,
-                        @Estrelas, @Photos, @Local, @Comodidades)";
+                    INSERT INTO alojamento (Nome, Descricao, Tipo, Latitude, Longitude, PrecoPorNoite, CapacidadeMaxima,
+                                            Disponivel, Estrelas, Photos, Local, Comodidades)
+                    VALUES (@Nome, @Desc, @Tipo, @Latitude, @Longitude, @PrecoPorNoite, @CapacidadeMaxima, @Disponivel,
+                            @Estrelas, @Photos, @Local, @Comodidades);
+                    SELECT LAST_INSERT_ID();"; 
 
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@Nome", Nome);
@@ -179,17 +181,18 @@ namespace ProjetoPo.Models
                     cmd.Parameters.AddWithValue("@Local", Local);
                     cmd.Parameters.AddWithValue("@Comodidades", JsonConvert.SerializeObject(Comodidades));
 
-                    cmd.ExecuteNonQuery();
-                    return true;
+                    int novoId = Convert.ToInt32(cmd.ExecuteScalar());
+                    return novoId; 
                 }
             }
             catch (Exception ex)
             {
                 Logger logger = new Logger();
                 logger.LogError("Erro ao adicionar alojamento: " + ex.Message);
-                return false;
+                return 0; 
             }
         }
+
 
         public bool EditarAlojamento()
         {

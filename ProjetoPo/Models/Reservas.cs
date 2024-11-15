@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ProjetoPo.Form1;
 
 namespace ProjetoPo.Models
 {
@@ -275,7 +276,45 @@ namespace ProjetoPo.Models
                 MessageBox.Show($"Erro ao inserir reserva na base de dados: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         public static void AtualizarReservaNaDB(Reserva reserva)
+        {
+            try
+            {
+                string query = @"
+                UPDATE reserva 
+                SET 
+                    DataCheckIn = @DataCheckIn,
+                    DataCheckOut = @DataCheckOut,
+                    ValorTotal = @ValorTotal,
+                    Hospedes = @Hospedes,
+                    CheckIN = @CheckIN,
+                    IdCliente = @IdCliente
+                WHERE Id = @ReservaId";
+
+                using (var conn = ConexaoBD.GetConexao())
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+
+                    cmd.Parameters.AddWithValue("@ReservaId", reserva.Id);
+                    cmd.Parameters.AddWithValue("@DataCheckIn", reserva.DataCheckIn);
+                    cmd.Parameters.AddWithValue("@DataCheckOut", reserva.DataCheckOut);
+                    cmd.Parameters.AddWithValue("@ValorTotal", reserva.ValorTotal);
+                    cmd.Parameters.AddWithValue("@Hospedes", reserva.Hospedes);
+                    cmd.Parameters.AddWithValue("@CheckIN", reserva.CheckIN);
+                    cmd.Parameters.AddWithValue("@IdCliente", reserva.Pessoa.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao atualizar reserva na base de dados: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public static void CheckInReservaNaDB(Reserva reserva)
         {
             try
             {
@@ -301,12 +340,14 @@ namespace ProjetoPo.Models
         }
         public double CalcularValorTotal()
         {
+            Models.Alojamento alojamento = Models.Alojamento.GetAlojamentoById(Alojamento.Id);
+
             if (DataCheckOut <= DataCheckIn)
                 throw new InvalidOperationException("Data de Check-Out deve ser posterior à Data de Check-In.");
 
             int numeroDeNoites = (DataCheckOut - DataCheckIn).Days;
 
-            return numeroDeNoites * Alojamento.PrecoPorNoite;
+            return numeroDeNoites * alojamento.PrecoPorNoite;
         }
     }
 }

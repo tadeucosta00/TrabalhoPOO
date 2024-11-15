@@ -81,10 +81,12 @@ namespace ProjetoPo
         private void LoadAlojamentos()
         {
             listViewAlojamentos.Items.Clear();
-            comboBox3.Items.Clear();
 
             try
             {
+                comboBox3.DataSource = null;
+                comboBox3.Items.Clear();
+
                 List<Models.Alojamento> alojamentos = Models.Alojamento.GetAlojamentosFromDB();
 
                 if (listViewAlojamentos.Columns.Count == 0)
@@ -116,10 +118,11 @@ namespace ProjetoPo
                     item.SubItems.Add(alojamento.Estrelas.ToString());
                     listViewAlojamentos.Items.Add(item);
 
-                    comboBox3.DataSource = alojamentos;
-                    comboBox3.DisplayMember = "Nome";
-                    comboBox3.ValueMember = "Id";
+                    
                 }
+                comboBox3.DataSource = alojamentos;
+                comboBox3.DisplayMember = "Nome";
+                comboBox3.ValueMember = "Id";
             }
             catch (Exception ex)
             {
@@ -437,68 +440,28 @@ namespace ProjetoPo
 
                 listBoxFotosAlojamento.Items.Clear();
                 string pastaDestino = $@"C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\uploads\{alojamentoSelecionado.Id}";
+
                 if (Directory.Exists(pastaDestino))
                 {
                     List<string> fotos = new List<string>();
                     fotos.AddRange(Directory.GetFiles(pastaDestino, "*.jpg"));
                     fotos.AddRange(Directory.GetFiles(pastaDestino, "*.jpeg"));
                     fotos.AddRange(Directory.GetFiles(pastaDestino, "*.png"));
-                    foreach (string foto in fotos)
+
+                    if (fotos.Count > 0)
                     {
+                        string foto = fotos[0];
                         listBoxFotosAlojamento.Items.Add(foto);
                     }
-                }
-                else
-                {
-                    MessageBox.Show("O caminho das fotos não foi encontrado.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    else
+                    {
+                        MessageBox.Show("Nenhuma foto encontrada na pasta.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
 
 
-        private void SavePhotos(int id, List<string> arquivos)
-        {
-            string pastaDestino = @"C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\uploads\" + id;
-            try
-            {
-                if (!Directory.Exists(pastaDestino))
-                {
-                    Directory.CreateDirectory(pastaDestino);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Erro ao criar a pasta: {ex.Message}");
-            }
-
-            List<string> arquivosMovidos = new List<string>();
-
-            foreach (string arquivo in arquivos)
-            {
-                try
-                {
-                    string nomeArquivo = Path.GetFileName(arquivo);
-                    string caminhoDestino = Path.Combine(pastaDestino, nomeArquivo);
-
-                    File.Move(arquivo, caminhoDestino);
-
-                    arquivosMovidos.Add(caminhoDestino);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Erro ao mover o arquivo {arquivo}: {ex.Message}");
-                }
-            }
-
-            if (arquivosMovidos.Count > 0)
-            {
-                MessageBox.Show("Arquivos movidos com sucesso:\n" + string.Join("\n", arquivosMovidos));
-            }
-            else
-            {
-                MessageBox.Show("Nenhum arquivo foi movido.");
-            }
-        }
 
         private void button6_Click(object sender, EventArgs e)
         {
@@ -520,7 +483,7 @@ namespace ProjetoPo
                 Id = int.TryParse(id, out int idParsed) ? idParsed : 0,
                 Nome = nome,
                 Desc = desc,
-                Tipo = Enum.TryParse<TipoAlojamento>(tipoString, true, out TipoAlojamento tipo) ? tipo : TipoAlojamento.Hotel, // Valor padrão
+                Tipo = Enum.TryParse<TipoAlojamento>(tipoString, true, out TipoAlojamento tipo) ? tipo : TipoAlojamento.Hotel,
                 Latitude = lat,
                 Longitude = log,
                 PrecoPorNoite = double.Parse(precoPorNoite),
@@ -533,15 +496,42 @@ namespace ProjetoPo
             };
 
             bool sucesso;
+
             if (alojamento.Id > 0)
             {
                 sucesso = alojamento.EditarAlojamento();
+                if (sucesso)
+                {
+                    string pastaDestino = $@"C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\uploads\{alojamento.Id}";
+
+                    try
+                    {
+                        if (Directory.Exists(pastaDestino))
+                        {
+                            Directory.Delete(pastaDestino, true);
+                            System.Threading.Thread.Sleep(100); 
+                        }
+                    }
+                    catch (IOException ex)
+                    {
+                        MessageBox.Show($"Erro ao excluir fotos antigas: {ex.Message}");
+                        return;
+                    }
+                }
                 MessageBox.Show(sucesso ? "Alojamento atualizado com sucesso." : "Erro ao atualizar alojamento.");
             }
             else
             {
-                sucesso = alojamento.AdicionarAlojamento();
+                int novoId = alojamento.AdicionarAlojamento();
+                sucesso = novoId > 0;
+                alojamento.Id = novoId; 
                 MessageBox.Show(sucesso ? "Novo alojamento inserido com sucesso." : "Erro ao inserir alojamento.");
+            }
+
+            if (sucesso && photos && listBoxFotosAlojamento.Items.Count > 0)
+            {
+                string arquivoFoto = listBoxFotosAlojamento.Items[0].ToString();
+                SavePhoto(alojamento.Id, arquivoFoto); 
             }
 
             if (sucesso)
@@ -551,92 +541,112 @@ namespace ProjetoPo
         }
 
 
+
+        private void SavePhoto(int id, string arquivo)
+        {
+            string pastaDestino = @"C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\uploads\" + id;
+            try
+            {
+                if (!Directory.Exists(pastaDestino))
+                {
+                    Directory.CreateDirectory(pastaDestino);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao criar a pasta: {ex.Message}");
+                return;
+            }
+
+            try
+            {
+                string caminhoDestino = Path.Combine(pastaDestino, id.ToString());
+
+                File.Copy(arquivo, caminhoDestino, true);
+
+                MessageBox.Show("Foto copiada com sucesso para:\n" + caminhoDestino);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao copiar o arquivo {arquivo}: {ex.Message}");
+            }
+        }
+
+
         private void button7_Click(object sender, EventArgs e)
         {
-
-            string filePath = @"c:\Users\tadeu\Documents\GitHub\TrabalhoPOO\reservas.json";
             string id = textBox11.Text;
-            int idCliente = comboBox4.SelectedIndex;
-            int idAlojamento = comboBox3.SelectedIndex;
+
+            Models.Pessoa pessoaSelecionada = comboBox4.SelectedItem as Models.Pessoa;
+            Models.Alojamento alojamentoSelecionado = comboBox3.SelectedItem as Models.Alojamento;
+
+            int idCliente = pessoaSelecionada != null ? pessoaSelecionada.Id : 0;
+            int idAlojamento = alojamentoSelecionado != null ? alojamentoSelecionado.Id : 0;
+            int hospedes = (int)comboBox6.SelectedItem;
+     
+
+
             DateTime dataCheckIn = DateTime.Parse(dateTimePicker1.Text);
             DateTime dataCheckOut = DateTime.Parse(dateTimePicker2.Text);
 
             TimeSpan diferenca = dataCheckOut - dataCheckIn;
-
             int numeroDeDias = diferenca.Days;
 
-            List<Models.Reserva> reservas = new List<Models.Reserva>();
-            if (File.Exists(filePath))
+            if (!string.IsNullOrEmpty(id))
             {
-                string jsonData = File.ReadAllText(filePath);
-                reservas = JsonConvert.DeserializeObject<List<Models.Reserva>>(jsonData);
+                Models.Reserva reservaExistente = Models.Reserva.GetReservaById(Int32.Parse(id));
+
+                if (reservaExistente != null)
+                {
+                    reservaExistente.DataCheckIn = dataCheckIn;
+                    reservaExistente.DataCheckOut = dataCheckOut;
+                    reservaExistente.Hospedes = hospedes;
+                    reservaExistente.Pessoa.Id = idCliente;
+                    reservaExistente.ValorTotal = reservaExistente.CalcularValorTotal();
+                    reservaExistente.CheckIN = reservaExistente.CheckIN;
+
+                    Models.Reserva.AtualizarReservaNaDB(reservaExistente);
+                    MessageBox.Show("Reserva atualizada com sucesso.");
+                }
+                else
+                {
+                    MessageBox.Show("Reserva não encontrada.");
+                }
             }
             else
             {
-                MessageBox.Show("O ficheiro JSON não foi encontrado. Será criado um novo.");
-            }
-
-            if (id != "")
-            {
-
-
-            }
-            else
-            {
-
-                string filePathPessoas = @"c:\Users\tadeu\Documents\GitHub\TrabalhoPOO\clientes.json";
-                string filePathAlojamentos = @"c:\Users\tadeu\Documents\GitHub\TrabalhoPOO\alojamentos.json";
-
-                List<Models.Pessoa> pessoas = new List<Models.Pessoa>();
-                List<Models.Alojamento> alojamentos = new List<Models.Alojamento>();
-
-                if (File.Exists(filePathPessoas))
-                {
-                    string jsonDataPessoas = File.ReadAllText(filePathPessoas);
-                    pessoas = JsonConvert.DeserializeObject<List<Models.Pessoa>>(jsonDataPessoas);
-                }
-
-                if (File.Exists(filePathAlojamentos))
-                {
-                    string jsonDataAlojamentos = File.ReadAllText(filePathAlojamentos);
-                    alojamentos = JsonConvert.DeserializeObject<List<Models.Alojamento>>(jsonDataAlojamentos);
-                }
-
-                if (pessoas.Count == 0 || alojamentos.Count == 0)
-                {
-                    MessageBox.Show("Não foi possível carregar os dados de pessoas ou alojamentos.");
-                    return;
-                }
-
-                Models.Pessoa pessoa = pessoas[idCliente];
-                Models.Alojamento alojamento = alojamentos[idAlojamento];
-
-                double valorTotal = alojamento.PrecoPorNoite * numeroDeDias;
-
-
-                int contador = reservas.Count;
-                contador++;
                 Models.Reserva novaReserva = new Models.Reserva
                 {
-                    Id = contador,
-                    Pessoa = pessoa,
-                    Alojamento = alojamento,
+                    Pessoa = new Models.Pessoa { Id = idCliente },
+                    Alojamento = new Models.Alojamento { Id = idAlojamento },
                     DataCheckIn = dataCheckIn,
                     DataCheckOut = dataCheckOut,
-                    ValorTotal = valorTotal,
+                    Hospedes = hospedes,
+                    ValorTotal = 0,
                     CheckIN = false
                 };
+                novaReserva.ValorTotal = novaReserva.CalcularValorTotal();
 
-                reservas.Add(novaReserva);
+                try
+                {
+
+                    DialogResult dr = MessageBox.Show("Confirmar Reserva?", "Deseja confirmar a reserva?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
+
+                    if (dr == DialogResult.Yes)
+                    {
+                        Models.Reserva.AdcionarReservaNaDB(novaReserva);
+
+                        MessageBox.Show("Reserva efetuada com sucesso.");
+                    }
+                }
+                catch (InvalidOperationException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
             }
-            string novoJsonData = JsonConvert.SerializeObject(reservas, Formatting.Indented);
 
-            File.WriteAllText(filePath, novoJsonData);
-
-            MessageBox.Show("Dados atualizados com sucesso.");
             LoadReservas();
-
-
         }
 
         private void button8_Click(object sender, EventArgs e)
@@ -693,6 +703,7 @@ namespace ProjetoPo
 
         private void listView2_SelectedIndexChanged(object sender, EventArgs e)
         {
+            comboBox3.Enabled = false;
             if (listView2.SelectedItems.Count > 0)
             {
                 ListViewItem selectedItem = listView2.SelectedItems[0];
@@ -745,12 +756,14 @@ namespace ProjetoPo
 
                 reserva.CheckIN = true;
 
-                Models.Reserva.AtualizarReservaNaDB(reserva);
+                Models.Reserva.CheckInReservaNaDB(reserva);
 
                 MessageBox.Show("Check-In realizado com sucesso!", "Informação", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 LoadReservas();
             }
         }
+
+       
     }
 }

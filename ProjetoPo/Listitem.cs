@@ -34,7 +34,7 @@ namespace ProjetoPo
 
         private void Listitem_Load(object sender, EventArgs e)
         {
-
+            label2.Location = new Point(label1.Right + 10, label1.Location.Y);
         }
 
         public string Titulo

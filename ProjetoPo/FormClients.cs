@@ -29,12 +29,12 @@ namespace ProjetoPo
         public FormClients()
         {
             InitializeComponent();
-            Models.Pessoa usuarioAtual = PessoaManager.Instance.ObterUtilziadorLogado();
+            Models.Pessoa utilizadorAtual = PessoaManager.Instance.ObterUtilziadorLogado();
             LoadAlojamentos();
             LoadComodidades();
 
             comboBox1.Items.Clear();
-            if (usuarioAtual.Adm == true)
+            if (utilizadorAtual.Adm == true)
             {
                 label18.Visible = true;
             }
@@ -121,7 +121,7 @@ namespace ProjetoPo
 
         private void LoadReservas()
         {
-            Models.Pessoa usuarioAtual = PessoaManager.Instance.ObterUtilziadorLogado();
+            Models.Pessoa utilizadorAtual = PessoaManager.Instance.ObterUtilziadorLogado();
 
             try
             {
@@ -133,7 +133,7 @@ namespace ProjetoPo
 
                     foreach (var reserva in reservas)
                     {
-                        if (reserva.Pessoa.Id == usuarioAtual.Id)
+                        if (reserva.Pessoa.Id == utilizadorAtual.Id)
                         {
                             string checkInStatus = "none";
                             Color buttonColor = Color.Transparent;
@@ -345,19 +345,40 @@ namespace ProjetoPo
 
         private System.Drawing.Image GetImageFromPath(Models.Alojamento alojamento)
         {
-            string imagePath = $@"C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\uploads\{alojamento.Id}\download.jpg";
+            string pastaDestino = $@"C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\uploads\{alojamento.Id}";
 
-            if (!string.IsNullOrEmpty(imagePath) && File.Exists(imagePath))
+            if (Directory.Exists(pastaDestino))
             {
-                return System.Drawing.Image.FromFile(imagePath);
+                try
+                {
+                    string[] arquivosImagem = Directory.GetFiles(pastaDestino, $"{alojamento.Id}.*")
+                        .Where(file => file.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
+                                       file.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase) ||
+                                       file.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
+                        .ToArray();
+
+                    if (arquivosImagem.Length > 0)
+                    {
+                        return System.Drawing.Image.FromFile(arquivosImagem[0]); 
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nenhuma imagem encontrada na pasta.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao carregar a imagem: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
             {
-                MessageBox.Show($"Imagem não encontrada em: {imagePath}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                return null;
+                MessageBox.Show($"Pasta não encontrada: {pastaDestino}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+
+            return null; 
         }
+
 
         private void label5_Click(object sender, EventArgs e)
         {
@@ -370,7 +391,7 @@ namespace ProjetoPo
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Models.Pessoa usuarioAtual = PessoaManager.Instance.ObterUtilziadorLogado();
+            Models.Pessoa utilizadorAtual = PessoaManager.Instance.ObterUtilziadorLogado();
 
             if (string.IsNullOrWhiteSpace(comboBox1.Text))
             {
@@ -378,7 +399,7 @@ namespace ProjetoPo
                 return;
             }
 
-            int idCliente = usuarioAtual.Id;
+            int idCliente = utilizadorAtual.Id;
 
             int idAlojamento = int.Parse(textBox3.Text);
             DateTime dataCheckIn = DateTime.Parse(dateTimePicker1.Text);
@@ -404,16 +425,15 @@ namespace ProjetoPo
                 return;
             }
 
-            double valorTotal = alojamento.PrecoPorNoite * numeroDeDias;
 
             Models.Reserva novaReserva = new Models.Reserva
             {
-                Pessoa = usuarioAtual,
+                Pessoa = utilizadorAtual,
                 Alojamento = alojamento,
                 DataCheckIn = dataCheckIn,
                 DataCheckOut = dataCheckOut,
                 Hospedes = hospedes,
-                ValorTotal = valorTotal,
+                ValorTotal = 0,
                 CheckIN = false,
             };
 
@@ -448,8 +468,8 @@ namespace ProjetoPo
 
         private void label18_Click(object sender, EventArgs e)
         {
-            Models.Pessoa usuarioAtual = PessoaManager.Instance.ObterUtilziadorLogado();
-            if (usuarioAtual.Adm == true)
+            Models.Pessoa utilizadorAtual = PessoaManager.Instance.ObterUtilziadorLogado();
+            if (utilizadorAtual.Adm == true)
             {
                 FormAdm form1 = new FormAdm();
                 form1.Show();
@@ -459,7 +479,7 @@ namespace ProjetoPo
 
         private void label19_Click(object sender, EventArgs e)
         {
-            Models.Pessoa usuarioAtual = PessoaManager.Instance.ObterUtilziadorLogado();
+            Models.Pessoa utilizadorAtual = PessoaManager.Instance.ObterUtilziadorLogado();
 
             string scriptPath = @"C:\Users\tadeu\Desktop\te\script.py";
             string pythonPath = @"C:\Users\tadeu\AppData\Local\Microsoft\WindowsApps\python.exe";
@@ -467,7 +487,7 @@ namespace ProjetoPo
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
                 FileName = pythonPath,
-                Arguments = $"\"{scriptPath}\" {usuarioAtual.Id}\"",
+                Arguments = $"\"{scriptPath}\" {utilizadorAtual.Id}\"",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
@@ -493,9 +513,9 @@ namespace ProjetoPo
                     {
                         MessageBox.Show("Rosto Validado.");
 
-                        /*if (usuario != null)
+                        /*if (utilizador != null)
                         {
-                            PessoaManager.Instance.AdicionarPessoa(usuario);
+                            PessoaManager.Instance.AdicionarPessoa(utilizador);
                         }
                         FormClients form1 = new FormClients();
                         form1.Show();

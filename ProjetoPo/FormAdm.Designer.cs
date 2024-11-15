@@ -85,6 +85,8 @@
             label1 = new Label();
             listView1 = new ListView();
             panel5 = new Panel();
+            checkBox1 = new CheckBox();
+            label38 = new Label();
             label37 = new Label();
             button10 = new Button();
             comboBox6 = new ComboBox();
@@ -300,7 +302,7 @@
             panel4.Controls.Add(textBox8);
             panel4.Controls.Add(label9);
             panel4.Controls.Add(listViewAlojamentos);
-            panel4.Location = new Point(1524, 18);
+            panel4.Location = new Point(261, 134);
             panel4.Name = "panel4";
             panel4.Size = new Size(1652, 908);
             panel4.TabIndex = 21;
@@ -750,11 +752,12 @@
             // 
             // panel5
             // 
+            panel5.Controls.Add(checkBox1);
+            panel5.Controls.Add(label38);
             panel5.Controls.Add(label37);
             panel5.Controls.Add(button10);
             panel5.Controls.Add(comboBox6);
             panel5.Controls.Add(label36);
-            panel5.Controls.Add(panel4);
             panel5.Controls.Add(dateTimePicker2);
             panel5.Controls.Add(dateTimePicker1);
             panel5.Controls.Add(label14);
@@ -772,6 +775,27 @@
             panel5.Size = new Size(1643, 800);
             panel5.TabIndex = 22;
             panel5.Visible = false;
+            // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Font = new Font("Segoe UI", 15F);
+            checkBox1.Location = new Point(938, 544);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(131, 39);
+            checkBox1.TabIndex = 37;
+            checkBox1.Text = "Desativa";
+            checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // label38
+            // 
+            label38.AutoSize = true;
+            label38.Font = new Font("Segoe UI", 15F);
+            label38.Location = new Point(795, 543);
+            label38.Name = "label38";
+            label38.Size = new Size(95, 35);
+            label38.TabIndex = 36;
+            label38.Text = "Estado:";
             // 
             // label37
             // 
@@ -1155,6 +1179,7 @@
             Controls.Add(panel6);
             Controls.Add(panel2);
             Controls.Add(panel1);
+            Controls.Add(panel4);
             Name = "FormAdm";
             Text = "Form1";
             WindowState = FormWindowState.Maximized;
@@ -1280,5 +1305,7 @@
         private ComboBox comboBox6;
         private Label label36;
         private Label label37;
+        private CheckBox checkBox1;
+        private Label label38;
     }
 }

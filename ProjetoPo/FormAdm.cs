@@ -10,7 +10,11 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using ProjetoPo.Models;
 using System.Text;
-using static ProjetoPo.Form1;
+using Mono.Unix.Native;
+using Logs;
+using Microsoft.Extensions.Logging;
+using static IronPython.Modules._ast;
+using System.Globalization;
 
 namespace ProjetoPo
 {
@@ -30,11 +34,11 @@ namespace ProjetoPo
         private void LoadPessoas()
         {
             listView1.Items.Clear();
-            comboBox4.Items.Clear();
+            comboBox4.DataSource = null; 
 
             try
             {
-                List<Models.Pessoa> pessoas = Models.Pessoa.GetAll();
+                List<Models.Pessoa> pessoas = Models.PessoaTable.GetAll();
 
                 if (listView1.Columns.Count == 0)
                 {
@@ -47,7 +51,7 @@ namespace ProjetoPo
                     listView1.Columns.Add("Telefone", 100);
                     listView1.Columns.Add("Documento", 100);
                     listView1.Columns.Add("Permissão", 100);
-
+                    listView1.Columns.Add("Estado", 100);
                 }
 
                 foreach (var pessoa in pessoas)
@@ -65,12 +69,20 @@ namespace ProjetoPo
                     {
                         item.SubItems.Add("Normal");
                     }
+                    if (pessoa.Ativo == true)
+                    {
+                        item.SubItems.Add("Ativo");
+                    }
+                    else
+                    {
+                        item.BackColor = Color.Red;
+                        item.SubItems.Add("Desativo");
+                    }
                     listView1.Items.Add(item);
-                    comboBox4.DataSource = pessoas;
-                    comboBox4.DisplayMember = "Nome";
-                    comboBox4.ValueMember = "Id";
-
                 }
+                comboBox4.DataSource = pessoas;
+                comboBox4.DisplayMember = "Nome";
+                comboBox4.ValueMember = "Id";
             }
             catch (Exception ex)
             {
@@ -87,7 +99,7 @@ namespace ProjetoPo
                 comboBox3.DataSource = null;
                 comboBox3.Items.Clear();
 
-                List<Models.Alojamento> alojamentos = Models.Alojamento.GetAlojamentosFromDB();
+                List<Models.Alojamento> alojamentos = Models.AlojamentosTable.GetAlojamentosFromDB();
 
                 if (listViewAlojamentos.Columns.Count == 0)
                 {
@@ -137,18 +149,20 @@ namespace ProjetoPo
 
             try
             {
-                List<Models.Reserva> reservas = Models.Reserva.GetAllReservasFromDB();
+                List<Models.Reserva> reservas = Models.ReservasTable.GetAllReservasFromDB();
 
                 listView2.View = View.Details;
                 listView2.FullRowSelect = true;
 
-                listView2.Columns.Add("ID", 100);
+                listView2.Columns.Add("ID", 80);
                 listView2.Columns.Add("Nome Alojamento", 150);
                 listView2.Columns.Add("Nome Cliente", 150);
                 listView2.Columns.Add("Data Check-In", 150);
                 listView2.Columns.Add("Data Check-Out", 150);
-                listView2.Columns.Add("Valor", 130);
-                listView2.Columns.Add("Check-In", 150);
+                listView2.Columns.Add("Valor", 100);
+                listView2.Columns.Add("Check-In", 100);
+                listView2.Columns.Add("Estado", 100);
+
 
                 foreach (var reserva in reservas)
                 {
@@ -159,6 +173,11 @@ namespace ProjetoPo
                     item.SubItems.Add(reserva.DataCheckOut.ToString("dd/MM/yyyy"));
                     item.SubItems.Add(reserva.ValorTotal.ToString("F2") + "€");
                     item.SubItems.Add(reserva.CheckIN ? "Sim" : "Não");
+                    item.SubItems.Add(reserva.Ativo ? "Ativa" : "Cancelada");
+                    if (!reserva.Ativo)
+                    {
+                        item.BackColor = Color.Red;
+                    }
 
                     listView2.Items.Add(item);
                 }
@@ -186,9 +205,9 @@ namespace ProjetoPo
 
             try
             {
-                List<Models.Reserva> reservas = Models.Reserva.GetAllReservasFromDB();
-                List<Models.Pessoa> pessoas = Models.Pessoa.GetAll();
-                List<Models.Alojamento> alojamentos = Models.Alojamento.GetAlojamentosFromDB();
+                List<Models.Reserva> reservas = Models.ReservasTable.GetAllReservasFromDB();
+                List<Models.Pessoa> pessoas = Models.PessoaTable.GetAll();
+                List<Models.Alojamento> alojamentos = Models.AlojamentosTable.GetAlojamentosFromDB();
 
                 listView3.View = View.Details;
                 listView3.FullRowSelect = true;
@@ -242,6 +261,30 @@ namespace ProjetoPo
 
         private void button2_Click(object sender, EventArgs e)
         {
+            foreach (Control control in panel5.Controls)
+            {
+                if (control is System.Windows.Forms.TextBox textBox)
+                {
+                    textBox.Text = "";
+                }
+                if (control is System.Windows.Forms.ComboBox comboBox)
+                {
+                    comboBox.SelectedIndex = 0;
+                    //comboBox.Text = "";
+                }
+                if (control is System.Windows.Forms.DateTimePicker datetimepicker)
+                {
+                    datetimepicker.Value = DateTime.Now;
+                }
+            }
+
+            string id = textBox11.Text;
+            if (string.IsNullOrEmpty(id))
+            { 
+                button10.Enabled = false;
+                comboBox3.Enabled = true;
+            }
+            
 
             panel3.Visible = false;
             panel4.Visible = false;
@@ -262,6 +305,8 @@ namespace ProjetoPo
             textBox3.Clear();
             textBox4.Clear();
             textBox7.Clear();
+            comboBox5.SelectedIndex = 0;
+
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -272,22 +317,17 @@ namespace ProjetoPo
                 {
                     textBox.Text = "";
                 }
-                if (control is System.Windows.Forms.ComboBox comboBox)
-                {
-                    comboBox.Text = "";
-                }
                 if (control is System.Windows.Forms.RichTextBox richTextBox)
                 {
                     richTextBox.Text = "";
                 }
-
             }
 
             listBoxFotosAlojamento.Items.Clear();
 
             checkedListBox1.Items.Clear();
 
-            List<Models.Comodidades> comodidades = Models.Comodidades.GetComodidadesFromDB();
+            List<Models.Comodidades> comodidades = Models.ComodidadesTable.GetComodidadesFromDB();
             if (comodidades != null && comodidades.Count > 0)
             {
                 foreach (var comodidade in comodidades)
@@ -312,6 +352,9 @@ namespace ProjetoPo
             panel4.Visible = true;
             panel5.Visible = false;
             panel6.Visible = false;
+
+            comboBox1.SelectedIndex = 0;
+            comboBox2.SelectedIndex = 0;
 
             webView21.Source = new Uri("https://www.openstreetmap.org/#map=3/42.29/3.16");
         }
@@ -338,21 +381,53 @@ namespace ProjetoPo
                     comboBox5.SelectedIndex = 0;
 
                 }
+                if (selectedItem.SubItems[6].Text == "Desativo")
+                {
+                    checkBox2.Checked = true;
+                }
+                else
+                {
+                    checkBox2.Checked = false;
+                }
             }
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
+            Logger logger = new Logger();
             string id = textBox7.Text;
             string nome = textBox1.Text;
             string email = textBox2.Text;
             string telefone = textBox3.Text;
             string documento = textBox4.Text;
 
+            if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(telefone) || string.IsNullOrEmpty(documento))
+            {
+                MessageBox.Show("Todos os campos devem ser preenchidos.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            bool ativo = true;
+            bool adm = false;
+            if (checkBox2.Checked)
+            {
+                ativo = false;
+            }
+
+            if (comboBox5.SelectedIndex == 1)
+            {
+                adm = true;
+            }
+            else
+            {
+                adm = false;
+            }
+
+
             if (id != "")
             {
                 int pessoaId = int.Parse(id);
-                Models.Pessoa pessoaExistente = Models.Pessoa.GetById(pessoaId);
+                Pessoa pessoaExistente = Models.PessoaTable.GetById(pessoaId);
 
                 if (pessoaExistente != null)
                 {
@@ -360,31 +435,44 @@ namespace ProjetoPo
                     pessoaExistente.Email = email;
                     pessoaExistente.Telefone = telefone;
                     pessoaExistente.DocumentoIdentidade = documento;
-                    pessoaExistente.Atualizar();
+                    pessoaExistente.Adm = adm;
+                    pessoaExistente.Ativo = ativo;
+                    PessoaTable.Atualizar(pessoaExistente);
                     MessageBox.Show("Dados atualizados com sucesso.");
+                    logger.LogInfo("Pessoa Atualizada Id:" + id);
                 }
                 else
                 {
                     MessageBox.Show("Pessoa não encontrada.");
+                    logger.LogError("Pessoa não encontrada");
                 }
             }
             else
             {
-                byte[] data = Encoding.ASCII.GetBytes(documento);
-                data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
-                string hash = BitConverter.ToString(data).Replace("-", "").ToLower();
-                Models.Pessoa novaPessoa = new Models.Pessoa
+                try
                 {
-                    Nome = nome,
-                    Email = email,
-                    Telefone = telefone,
-                    DocumentoIdentidade = documento,
-                    Senha = hash,
-                    Adm = false
-                };
+                    byte[] data = Encoding.ASCII.GetBytes(documento);
+                    data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
+                    string hash = BitConverter.ToString(data).Replace("-", "").ToLower();
+                    Pessoa novaPessoa = new Pessoa
+                    {
+                        Nome = nome,
+                        Email = email,
+                        Telefone = telefone,
+                        DocumentoIdentidade = documento,
+                        Senha = hash,
+                        Adm = adm,
+                    };
 
-                novaPessoa.Salvar();
-                MessageBox.Show("Nova pessoa adicionada com sucesso.");
+                    PessoaTable.Salvar(novaPessoa);
+                    MessageBox.Show("Nova pessoa adicionada com sucesso.");
+                    logger.LogInfo("Nova pessoa adicionada com sucesso.");
+                }
+                catch (InvalidOperationException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    logger.LogError("Erro ao adicionar: " + ex);
+                }
             }
             LoadPessoas();
         }
@@ -396,7 +484,7 @@ namespace ProjetoPo
             {
                 int selectedAlojamentoId = int.Parse(listViewAlojamentos.SelectedItems[0].Text);
 
-                Models.Alojamento alojamentoSelecionado = Models.Alojamento.GetAlojamentoById(selectedAlojamentoId);
+                Models.Alojamento alojamentoSelecionado = Models.AlojamentosTable.GetAlojamentoById(selectedAlojamentoId);
 
                 if (alojamentoSelecionado == null)
                 {
@@ -420,7 +508,7 @@ namespace ProjetoPo
 
                 checkedListBox1.Items.Clear();
 
-                List<Models.Comodidades> comodidades = Models.Comodidades.GetComodidadesFromDB();
+                List<Models.Comodidades> comodidades = Models.ComodidadesTable.GetComodidadesFromDB();
                 if (comodidades != null && comodidades.Count > 0)
                 {
                     foreach (var comodidade in comodidades)
@@ -465,6 +553,7 @@ namespace ProjetoPo
 
         private void button6_Click(object sender, EventArgs e)
         {
+            Logger logger = new Logger();
             string id = textBox10.Text;
             string nome = textBox8.Text;
             string desc = richTextBox1.Text;
@@ -474,6 +563,56 @@ namespace ProjetoPo
             string precoPorNoite = textBox5.Text;
             string estrelas = textBox13.Text;
             string local = textBox14.Text;
+            string capacidade = textBox9.Text;
+
+
+            if (string.IsNullOrEmpty(nome) ||
+            string.IsNullOrEmpty(desc) ||
+            string.IsNullOrEmpty(tipoString) ||
+            string.IsNullOrEmpty(lat) ||
+            string.IsNullOrEmpty(log) ||
+            string.IsNullOrEmpty(precoPorNoite) ||
+            string.IsNullOrEmpty(estrelas) ||
+            string.IsNullOrEmpty(local) ||
+            string.IsNullOrEmpty(capacidade))
+            {
+                MessageBox.Show("Todos os campos devem ser preenchidos.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!int.TryParse(estrelas, out int estrelasInt) || estrelasInt < 1 || estrelasInt > 5)
+            {
+                MessageBox.Show("O campo Estrelas deve ser um número entre 1 e 5.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!int.TryParse(capacidade, out int capacidadeInt) || capacidadeInt < 1)
+            {
+                MessageBox.Show("O campo Capacidade deve ser um número superior que 1.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!double.TryParse(lat, NumberStyles.Float, CultureInfo.InvariantCulture, out double latDouble))
+            {
+                MessageBox.Show("O campo Latitude deve conter um valor numerico valido.",
+                                "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!double.TryParse(log, NumberStyles.Float, CultureInfo.InvariantCulture, out double logDouble))
+            {
+                MessageBox.Show("O campo Longitude deve conter um valor numerico valido.",
+                                "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!decimal.TryParse(precoPorNoite, out decimal precoDecimal) || precoDecimal < 0)
+            {
+                MessageBox.Show("O campo Preço por Noite deve conter um valor numerico valido e positivo.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+
             List<string> comodidadesSelecionadas = checkedListBox1.CheckedItems.Cast<string>().ToList();
             bool disponivel = comboBox1.Text.Equals("Sim", StringComparison.OrdinalIgnoreCase);
             bool photos = listBoxFotosAlojamento.Items.Count > 0;
@@ -487,7 +626,7 @@ namespace ProjetoPo
                 Latitude = lat,
                 Longitude = log,
                 PrecoPorNoite = double.Parse(precoPorNoite),
-                CapacidadeMaxima = int.Parse(textBox9.Text),
+                CapacidadeMaxima = int.Parse(capacidade),
                 Disponivel = disponivel,
                 Estrelas = int.Parse(estrelas),
                 Photos = photos,
@@ -499,8 +638,8 @@ namespace ProjetoPo
 
             if (alojamento.Id > 0)
             {
-                sucesso = alojamento.EditarAlojamento();
-                if (sucesso)
+                sucesso = AlojamentosTable.EditarAlojamento(alojamento);
+                /*if (sucesso)
                 {
                     string pastaDestino = $@"C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\uploads\{alojamento.Id}";
 
@@ -517,22 +656,26 @@ namespace ProjetoPo
                         MessageBox.Show($"Erro ao excluir fotos antigas: {ex.Message}");
                         return;
                     }
-                }
+                }*/
                 MessageBox.Show(sucesso ? "Alojamento atualizado com sucesso." : "Erro ao atualizar alojamento.");
+                logger.LogInfo("Alojamneto Atualizado!");
+
             }
             else
             {
-                int novoId = alojamento.AdicionarAlojamento();
+                int novoId = AlojamentosTable.AdicionarAlojamento(alojamento);
                 sucesso = novoId > 0;
-                alojamento.Id = novoId; 
+                alojamento.Id = novoId;
+                if (sucesso && photos && listBoxFotosAlojamento.Items.Count > 0)
+                {
+                    string arquivoFoto = listBoxFotosAlojamento.Items[0].ToString();
+                    SavePhoto(alojamento.Id, arquivoFoto);
+                }
                 MessageBox.Show(sucesso ? "Novo alojamento inserido com sucesso." : "Erro ao inserir alojamento.");
+                logger.LogInfo("Novo Alojamneto Inserido!");
             }
 
-            if (sucesso && photos && listBoxFotosAlojamento.Items.Count > 0)
-            {
-                string arquivoFoto = listBoxFotosAlojamento.Items[0].ToString();
-                SavePhoto(alojamento.Id, arquivoFoto); 
-            }
+
 
             if (sucesso)
             {
@@ -560,7 +703,7 @@ namespace ProjetoPo
 
             try
             {
-                string caminhoDestino = Path.Combine(pastaDestino, id.ToString());
+                string caminhoDestino = Path.Combine(pastaDestino, id.ToString()+".jpg");
 
                 File.Copy(arquivo, caminhoDestino, true);
 
@@ -575,26 +718,46 @@ namespace ProjetoPo
 
         private void button7_Click(object sender, EventArgs e)
         {
+            Logger logger = new Logger();
             string id = textBox11.Text;
 
-            Models.Pessoa pessoaSelecionada = comboBox4.SelectedItem as Models.Pessoa;
-            Models.Alojamento alojamentoSelecionado = comboBox3.SelectedItem as Models.Alojamento;
+            Pessoa pessoaSelecionada = comboBox4.SelectedItem as Pessoa;
+            Alojamento alojamentoSelecionado = comboBox3.SelectedItem as Alojamento;
 
             int idCliente = pessoaSelecionada != null ? pessoaSelecionada.Id : 0;
             int idAlojamento = alojamentoSelecionado != null ? alojamentoSelecionado.Id : 0;
-            int hospedes = (int)comboBox6.SelectedItem;
-     
+            int hospedes = 0;
+            if (comboBox6.SelectedItem == null) {
+                MessageBox.Show("Sem Hospedes!");
+                return;
+            }
+            else
+            {
+                hospedes = (int)comboBox6.SelectedItem;
+            }
 
+            bool ativa = true;
+            if (checkBox1.Checked == true)
+            {
+                ativa = false;
+            }
 
             DateTime dataCheckIn = DateTime.Parse(dateTimePicker1.Text);
             DateTime dataCheckOut = DateTime.Parse(dateTimePicker2.Text);
 
+
             TimeSpan diferenca = dataCheckOut - dataCheckIn;
             int numeroDeDias = diferenca.Days;
 
+
+            if (numeroDeDias <= 0) {
+                MessageBox.Show("Reserva minima uma noite!");
+                return;
+            }
+
             if (!string.IsNullOrEmpty(id))
             {
-                Models.Reserva reservaExistente = Models.Reserva.GetReservaById(Int32.Parse(id));
+                Reserva reservaExistente = Models.ReservasTable.GetReservaById(Int32.Parse(id));
 
                 if (reservaExistente != null)
                 {
@@ -602,50 +765,53 @@ namespace ProjetoPo
                     reservaExistente.DataCheckOut = dataCheckOut;
                     reservaExistente.Hospedes = hospedes;
                     reservaExistente.Pessoa.Id = idCliente;
-                    reservaExistente.ValorTotal = reservaExistente.CalcularValorTotal();
+                    reservaExistente.ValorTotal = 0;
+                    reservaExistente.Ativo = ativa;
                     reservaExistente.CheckIN = reservaExistente.CheckIN;
+                    reservaExistente.ValorTotal = ReservasTable.CalcularValorTotal(reservaExistente);
 
-                    Models.Reserva.AtualizarReservaNaDB(reservaExistente);
+                    Models.ReservasTable.AtualizarReservaNaDB(reservaExistente);
                     MessageBox.Show("Reserva atualizada com sucesso.");
+                    logger.LogInfo("Alteração Reserva Id:" + id);
                 }
                 else
                 {
                     MessageBox.Show("Reserva não encontrada.");
+                    logger.LogError("Erro ao encontrar reserva.");
                 }
             }
             else
             {
                 Models.Reserva novaReserva = new Models.Reserva
                 {
-                    Pessoa = new Models.Pessoa { Id = idCliente },
-                    Alojamento = new Models.Alojamento { Id = idAlojamento },
+                    Pessoa = new Pessoa { Id = idCliente },
+                    Alojamento = new Alojamento { Id = idAlojamento },
                     DataCheckIn = dataCheckIn,
                     DataCheckOut = dataCheckOut,
                     Hospedes = hospedes,
                     ValorTotal = 0,
                     CheckIN = false
                 };
-                novaReserva.ValorTotal = novaReserva.CalcularValorTotal();
+                novaReserva.ValorTotal = ReservasTable.CalcularValorTotal(novaReserva);
 
                 try
                 {
-
                     DialogResult dr = MessageBox.Show("Confirmar Reserva?", "Deseja confirmar a reserva?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
 
                     if (dr == DialogResult.Yes)
                     {
-                        Models.Reserva.AdcionarReservaNaDB(novaReserva);
-
+                        ReservasTable.AdcionarReservaNaDB(novaReserva);
                         MessageBox.Show("Reserva efetuada com sucesso.");
+                        logger.LogInfo("Nova Reserva");
                     }
                 }
                 catch (InvalidOperationException ex)
                 {
                     MessageBox.Show(ex.Message);
+                    logger.LogError("Erro ao Reservar: "+ ex);
                 }
 
             }
-
             LoadReservas();
         }
 
@@ -696,9 +862,9 @@ namespace ProjetoPo
 
         private void button9_Click(object sender, EventArgs e)
         {
-            /*FormClients form1 = new FormClients();
+            FormClients form1 = new FormClients();
             form1.Show();
-            this.Hide();*/
+            this.Hide();
         }
 
         private void listView2_SelectedIndexChanged(object sender, EventArgs e)
@@ -708,7 +874,7 @@ namespace ProjetoPo
             {
                 ListViewItem selectedItem = listView2.SelectedItems[0];
                 textBox11.Text = listView2.SelectedItems[0].Text;
-                Models.Reserva reserva = Models.Reserva.GetReservaById(Int32.Parse(listView2.SelectedItems[0].Text));
+                Models.Reserva reserva = Models.ReservasTable.GetReservaById(Int32.Parse(listView2.SelectedItems[0].Text));
 
                 comboBox3.SelectedValue = reserva.Alojamento.Id;
                 comboBox4.SelectedValue = reserva.Pessoa.Id;
@@ -716,6 +882,14 @@ namespace ProjetoPo
 
                 dateTimePicker1.Value = reserva.DataCheckIn;
                 dateTimePicker2.Value = reserva.DataCheckOut;
+                if (reserva.Ativo == false)
+                {
+                    checkBox1.Checked = true;
+                }
+                else
+                {
+                    checkBox1.Checked = false;
+                }
 
                 if (reserva.DataCheckOut < DateTime.Now)
                 {
@@ -745,7 +919,7 @@ namespace ProjetoPo
                 MessageBox.Show("Nenhuma reserva selecionada!");
             }
 
-            Models.Reserva reserva = Models.Reserva.GetReservaById(Int32.Parse(id));
+            Models.Reserva reserva = Models.ReservasTable.GetReservaById(Int32.Parse(id));
             if (reserva != null)
             {
                 if (reserva.CheckIN)
@@ -756,10 +930,10 @@ namespace ProjetoPo
 
                 reserva.CheckIN = true;
 
-                Models.Reserva.CheckInReservaNaDB(reserva);
+                Models.ReservasTable.CheckInReservaNaDB(reserva);
 
                 MessageBox.Show("Check-In realizado com sucesso!", "Informação", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                button10.Enabled = false;
                 LoadReservas();
             }
         }

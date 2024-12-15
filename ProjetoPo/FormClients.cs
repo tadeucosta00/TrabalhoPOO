@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ProjetoPo.Form1;
 using static ProjetoPo.FormAdm;
 using ProjetoPo.Models;
 using static ProjetoPo.FormClients;
@@ -17,7 +16,11 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Microsoft.VisualBasic.ApplicationServices;
 using Logs;
 using MySql.Data.MySqlClient;
+using System.Security.Cryptography;
 using System.Diagnostics;
+using Mono.Unix.Native;
+using static IronPython.Modules._ast;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 
 namespace ProjetoPo
@@ -31,7 +34,6 @@ namespace ProjetoPo
             InitializeComponent();
             Models.Pessoa utilizadorAtual = PessoaManager.Instance.ObterUtilziadorLogado();
             LoadAlojamentos();
-            LoadComodidades();
 
             comboBox1.Items.Clear();
             if (utilizadorAtual.Adm == true)
@@ -43,19 +45,9 @@ namespace ProjetoPo
             {
                 comboBox1.Items.Add(i);
             }
+
         }
 
-        private void LoadComodidades()
-        {
-
-            /*List<Models.Comodidades> comodidades = Models.Comodidades.GetComodidadesFromDB();
-            if (comodidades != null && comodidades.Count > 0)
-            {
-                foreach (var comodidade in comodidades)
-                {
-                }
-            }*/
-        }
 
         private string GetStars(int estrelas)
         {
@@ -69,7 +61,7 @@ namespace ProjetoPo
         {
             try
             {
-                List<Models.Alojamento> alojamentos = Models.Alojamento.GetAlojamentosFromDB();
+                List<Models.Alojamento> alojamentos = Models.AlojamentosTable.GetAlojamentosFromDB();
                 if (alojamentos != null && alojamentos.Count > 0)
                 {
                     panel1.Controls.Clear();
@@ -84,7 +76,7 @@ namespace ProjetoPo
                             Preco = $"€{alojamento.PrecoPorNoite:F2}€",
                             Imagem = GetImageFromPath(alojamento),
                             Tag = alojamento,
-                            Local = alojamento.Local
+                            Local = "   "+alojamento.Local
                         };
 
                         item.Width = panel1.Width;
@@ -107,6 +99,11 @@ namespace ProjetoPo
                         };
                         panel1.Controls.Add(spacer);
                     }
+                    
+
+                    panel1.VerticalScroll.Value = Math.Min(panel1.VerticalScroll.Maximum, 0);
+
+
                 }
                 else
                 {
@@ -125,7 +122,7 @@ namespace ProjetoPo
 
             try
             {
-                List<Models.Reserva> reservas = Models.Reserva.GetReservasFromDB();
+                List<Models.Reserva> reservas = Models.ReservasTable.GetAllReservasFromDB();
 
                 if (reservas != null && reservas.Count > 0)
                 {
@@ -244,7 +241,7 @@ namespace ProjetoPo
 
                 reserva.CheckIN = true;
 
-                Models.Reserva.AtualizarReservaNaDB(reserva);
+                Models.ReservasTable.AtualizarReservaNaDB(reserva);
 
                 MessageBox.Show("Check-In realizado com sucesso!", "Informação", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -271,6 +268,8 @@ namespace ProjetoPo
                 panel4.Visible = false;
                 panel3.Visible = true;
                 label1.Visible = false;
+                panel6.Visible = false;
+
 
                 pictureBox1.Image = GetImageFromPath(alojamento);
                 label2.Text = alojamento.Nome;
@@ -320,7 +319,7 @@ namespace ProjetoPo
             { "Piscina", "Piscina.png" },
             { "Ginasio", "Ginasio.png" },
             { "Estacionamento", "Estacionamento.png" },
-            { "Wi-Fi gratuito", "WiFi.png" },
+            { "Wi-Fi", "WiFi.png" },
             { "Lavanderia", "Lavanderia.png" },
             { "Spa", "Spa.png" }
         };
@@ -359,7 +358,7 @@ namespace ProjetoPo
 
                     if (arquivosImagem.Length > 0)
                     {
-                        return System.Drawing.Image.FromFile(arquivosImagem[0]); 
+                        return System.Drawing.Image.FromFile(arquivosImagem[0]);
                     }
                     else
                     {
@@ -376,7 +375,7 @@ namespace ProjetoPo
                 MessageBox.Show($"Pasta não encontrada: {pastaDestino}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
-            return null; 
+            return null;
         }
 
 
@@ -385,8 +384,10 @@ namespace ProjetoPo
             panel3.Visible = false;
             panel4.Visible = true;
             panel5.Visible = false;
-            label1.Visible = true;
-            label1.Text = "Alojamentos";
+            panel6.Visible = false;
+            panel8.Visible = true;
+            label33.Visible = true;
+            label33.Text = "Alojamentos";
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -417,7 +418,7 @@ namespace ProjetoPo
                 return;
             }
 
-            Models.Alojamento alojamento = Models.Alojamento.GetAlojamentoById(idAlojamento);
+            Models.Alojamento alojamento = Models.AlojamentosTable.GetAlojamentoById(idAlojamento);
 
             if (alojamento == null)
             {
@@ -436,16 +437,17 @@ namespace ProjetoPo
                 ValorTotal = 0,
                 CheckIN = false,
             };
+            novaReserva.ValorTotal = ReservasTable.CalcularValorTotal(novaReserva);
+
 
             try
             {
-                novaReserva.ValorTotal = novaReserva.CalcularValorTotal();
 
                 DialogResult dr = MessageBox.Show("Confirmar Reserva?", "Deseja confirmar a reserva?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
 
                 if (dr == DialogResult.Yes)
                 {
-                    Models.Reserva.AdcionarReservaNaDB(novaReserva);
+                    Models.ReservasTable.AdcionarReservaNaDB(novaReserva);
 
                     MessageBox.Show("Reserva efetuada com sucesso.");
                 }
@@ -461,8 +463,11 @@ namespace ProjetoPo
             panel3.Visible = false;
             panel4.Visible = false;
             panel5.Visible = true;
-            label1.Visible = true;
-            label1.Text = "Minhas Reservas";
+            panel6.Visible = false;
+            panel8.Visible = false;
+            panel8.Visible = false;
+            label33.Visible = true;
+            label33.Text = "Minhas Reservas";
             LoadReservas();
         }
 
@@ -478,6 +483,99 @@ namespace ProjetoPo
         }
 
         private void label19_Click(object sender, EventArgs e)
+        {
+            panel6.Visible = true;
+            panel3.Visible = false;
+            panel4.Visible = false;
+            panel5.Visible = false;
+
+            Models.Pessoa utilizadorAtual = PessoaManager.Instance.ObterUtilziadorLogado();
+
+            textBox4.Text = utilizadorAtual.Id.ToString();
+            textBox5.Text = utilizadorAtual.Nome.ToString();
+            textBox6.Text = utilizadorAtual.Email.ToString();
+            textBox7.Text = utilizadorAtual.Telefone.ToString();
+            textBox8.Text = utilizadorAtual.DocumentoIdentidade.ToString();
+
+            string folderPath = @"C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\usersProfilePhotos\" + utilizadorAtual.Id.ToString();
+
+            if (Directory.Exists(folderPath))
+            {
+                string[] imageExtensions = { ".jpg", ".jpeg", ".png" };
+
+                var imageFiles = Directory.GetFiles(folderPath)
+                                           .Where(file => imageExtensions.Contains(Path.GetExtension(file).ToLower()))
+                                           .ToList();
+
+                if (imageFiles.Count > 0)
+                {
+                    pictureBox3.ImageLocation = imageFiles[0];
+                }
+                else
+                {
+                    MessageBox.Show("Nenhuma imagem foi encontrada na pasta.");
+                }
+            }
+        
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string valorMin = "";
+            string valorMax = "";
+
+            valorMin = textBox1.Text;
+            valorMax = textBox2.Text;
+
+            string selectedTipo = string.Join(", ", checkedListBox1.CheckedItems.Cast<string>());
+            string selectedIComodidades = string.Join(", ", checkedListBox2.CheckedItems.Cast<string>());
+
+            List<Models.Alojamento> resultados = Models.AlojamentosTable.getByFiltros(valorMin, valorMax, selectedTipo, selectedIComodidades);
+            if (resultados != null && resultados.Count > 0)
+            {
+                panel1.Controls.Clear();
+
+                foreach (var alojamento in resultados)
+                {
+                    Listitem item = new Listitem
+                    {
+                        Titulo = alojamento.Nome,
+                        Descricao = alojamento.Desc,
+                        Estrelas = GetStars(alojamento.Estrelas),
+                        Preco = $"€{alojamento.PrecoPorNoite:F2}€",
+                        Imagem = GetImageFromPath(alojamento),
+                        Tag = alojamento,
+                        Local = "   " + alojamento.Local
+                    };
+
+                    item.Width = panel1.Width;
+                    item.Dock = DockStyle.Top;
+
+                    item.Controls.OfType<PictureBox>().FirstOrDefault().SizeMode = PictureBoxSizeMode.Zoom;
+
+                    item.Click += ListItem_Click;
+                    foreach (Control control in item.Controls)
+                    {
+                        control.Click += (s, e) => ListItem_Click(item, e);
+                    }
+
+                    panel1.Controls.Add(item);
+
+                    var spacer = new Panel
+                    {
+                        Height = 10,
+                        Dock = DockStyle.Top
+                    };
+                    panel1.Controls.Add(spacer);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Nenhum alojamento encontrado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
         {
             Models.Pessoa utilizadorAtual = PessoaManager.Instance.ObterUtilziadorLogado();
 
@@ -512,14 +610,6 @@ namespace ProjetoPo
                     if (result.Trim().Contains("Captura concluída"))
                     {
                         MessageBox.Show("Rosto Validado.");
-
-                        /*if (utilizador != null)
-                        {
-                            PessoaManager.Instance.AdicionarPessoa(utilizador);
-                        }
-                        FormClients form1 = new FormClients();
-                        form1.Show();
-                        this.Hide();*/
                     }
                     else
                     {
@@ -530,6 +620,188 @@ namespace ProjetoPo
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao executar o script: " + ex.Message);
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Models.Pessoa utilizadorAtual = PessoaManager.Instance.ObterUtilziadorLogado();
+
+            string folderPath = @"C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\usersProfilePhotos\" + utilizadorAtual.Id;
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Imagens|*.jpg;*.jpeg;*.png;";
+                openFileDialog.Title = "Selecione uma foto";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        string sourceFilePath = openFileDialog.FileName;
+
+                        string fileName = Path.GetFileName(sourceFilePath);
+                        string destinationFilePath = Path.Combine(folderPath, fileName);
+
+                        File.Copy(sourceFilePath, destinationFilePath, overwrite: true);
+                        pictureBox3.ImageLocation = destinationFilePath;
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Ocorreu um erro ao copiar a foto: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Models.Pessoa utilizadorAtual = PessoaManager.Instance.ObterUtilziadorLogado();
+
+            if (utilizadorAtual != null)
+            {
+                try
+                {
+                    string nome = textBox5.Text;
+                    string documentoid = textBox8.Text;
+                    string telefone = textBox7.Text;
+                    if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(documentoid) || string.IsNullOrEmpty(telefone))
+                    {
+                        MessageBox.Show("Todos os campos devem ser preenchidos.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    Models.PessoaTable.Editar(utilizadorAtual.Id, nome, documentoid, telefone);
+
+                    MessageBox.Show("Dados atualizados com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao atualizar dados: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Nenhum utilizador encontrado para atualizar!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            panel7.Visible = true;
+        }
+
+        private void label31_Click(object sender, EventArgs e)
+        {
+            panel7.Visible = false;
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            Models.Pessoa utilizadorAtual = PessoaManager.Instance.ObterUtilziadorLogado();
+
+            string password = textBox11.Text;
+            string passwordNova = textBox10.Text;
+            string passwordNovaRepetida = textBox9.Text;
+            if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(passwordNova) || string.IsNullOrEmpty(passwordNovaRepetida))
+            {
+                MessageBox.Show("Todos os campos devem ser preenchidos.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (passwordNova != passwordNovaRepetida)
+            {
+                MessageBox.Show("As passwords não coicidem!");
+                return;
+            }
+
+            Models.Pessoa user = Models.PessoaTable.GetById(utilizadorAtual.Id);
+
+
+            byte[] data = Encoding.ASCII.GetBytes(password);
+            data = new SHA256Managed().ComputeHash(data);
+            string hash = BitConverter.ToString(data).Replace("-", "").ToLower();
+            if (hash != user.Senha)
+            {
+                MessageBox.Show("A senha atual está incorreta!");
+                return;
+            }
+
+            byte[] novaSenhaData = Encoding.ASCII.GetBytes(passwordNova);
+            novaSenhaData = new SHA256Managed().ComputeHash(novaSenhaData);
+            string novaSenhaHash = BitConverter.ToString(novaSenhaData).Replace("-", "").ToLower();
+
+            user.Senha = novaSenhaHash;
+            Models.PessoaTable.AtualizarSenha(user);
+
+
+            MessageBox.Show("Senha atualizada com sucesso!");
+
+            panel7.Visible = false;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            string filePath = "userId.txt";
+            File.WriteAllText(filePath, string.Empty);
+            Logincs flogin = new Logincs();
+            flogin.Show();
+            this.Hide();
+        }
+
+        private void label32_Click(object sender, EventArgs e)
+        {
+            string pesquisa = textBox12.Text;
+
+            List<Models.Alojamento> resultados = Models.AlojamentosTable.GetAlojamentosPorLocal(pesquisa);
+            if (resultados != null && resultados.Count > 0)
+            {
+                panel1.Controls.Clear();
+
+                foreach (var alojamento in resultados)
+                {
+                    Listitem item = new Listitem
+                    {
+                        Titulo = alojamento.Nome,
+                        Descricao = alojamento.Desc,
+                        Estrelas = GetStars(alojamento.Estrelas),
+                        Preco = $"€{alojamento.PrecoPorNoite:F2}€",
+                        Imagem = GetImageFromPath(alojamento),
+                        Tag = alojamento,
+                        Local = " " + alojamento.Local
+                    };
+
+                    item.Width = panel1.Width;
+                    item.Dock = DockStyle.Top;
+
+                    item.Controls.OfType<PictureBox>().FirstOrDefault().SizeMode = PictureBoxSizeMode.Zoom;
+
+                    item.Click += ListItem_Click;
+                    foreach (Control control in item.Controls)
+                    {
+                        control.Click += (s, e) => ListItem_Click(item, e);
+                    }
+
+                    panel1.Controls.Add(item);
+
+                    var spacer = new Panel
+                    {
+                        Height = 10,
+                        Dock = DockStyle.Top
+                    };
+                    panel1.Controls.Add(spacer);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Nenhum alojamento encontrado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

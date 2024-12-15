@@ -4,9 +4,6 @@
     <Compile Update="CreateAccount.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Update="FormAdm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -16,10 +13,10 @@
     <Compile Update="FormViewImage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Listitem.cs">
+    <Compile Update="Ui\Listitem.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="ListviewCheckIn.cs">
+    <Compile Update="Ui\ListviewCheckIn.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="Logincs.cs">

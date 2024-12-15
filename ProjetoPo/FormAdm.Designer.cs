@@ -69,7 +69,29 @@
             textBox8 = new TextBox();
             label9 = new Label();
             listViewAlojamentos = new ListView();
+            panel6 = new Panel();
+            panel10 = new Panel();
+            pictureBox5 = new PictureBox();
+            label22 = new Label();
+            label25 = new Label();
+            panel9 = new Panel();
+            pictureBox4 = new PictureBox();
+            label23 = new Label();
+            label26 = new Label();
+            panel8 = new Panel();
+            pictureBox3 = new PictureBox();
+            label19 = new Label();
+            label27 = new Label();
+            panel7 = new Panel();
+            pictureBox2 = new PictureBox();
+            label18 = new Label();
+            label28 = new Label();
+            label24 = new Label();
+            label21 = new Label();
+            listView3 = new ListView();
             panel3 = new Panel();
+            checkBox2 = new CheckBox();
+            label39 = new Label();
             comboBox5 = new ComboBox();
             label35 = new Label();
             textBox7 = new TextBox();
@@ -103,33 +125,11 @@
             label17 = new Label();
             label20 = new Label();
             listView2 = new ListView();
-            panel6 = new Panel();
-            panel10 = new Panel();
-            pictureBox5 = new PictureBox();
-            label22 = new Label();
-            label25 = new Label();
-            panel9 = new Panel();
-            pictureBox4 = new PictureBox();
-            label23 = new Label();
-            label26 = new Label();
-            panel8 = new Panel();
-            pictureBox3 = new PictureBox();
-            label19 = new Label();
-            label27 = new Label();
-            panel7 = new Panel();
-            pictureBox2 = new PictureBox();
-            label18 = new Label();
-            label28 = new Label();
-            label24 = new Label();
-            label21 = new Label();
-            listView3 = new ListView();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
             panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)webView21).BeginInit();
-            panel3.SuspendLayout();
-            panel5.SuspendLayout();
             panel6.SuspendLayout();
             panel10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
@@ -139,6 +139,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            panel3.SuspendLayout();
+            panel5.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -450,6 +452,7 @@
             textBox10.Name = "textBox10";
             textBox10.Size = new Size(125, 27);
             textBox10.TabIndex = 27;
+            textBox10.Visible = false;
             // 
             // comboBox2
             // 
@@ -595,369 +598,6 @@
             listViewAlojamentos.TabIndex = 11;
             listViewAlojamentos.UseCompatibleStateImageBehavior = false;
             listViewAlojamentos.SelectedIndexChanged += listViewAlojamentos_SelectedIndexChanged;
-            // 
-            // panel3
-            // 
-            panel3.Controls.Add(comboBox5);
-            panel3.Controls.Add(label35);
-            panel3.Controls.Add(textBox7);
-            panel3.Controls.Add(label11);
-            panel3.Controls.Add(button5);
-            panel3.Controls.Add(label2);
-            panel3.Controls.Add(textBox4);
-            panel3.Controls.Add(label4);
-            panel3.Controls.Add(textBox3);
-            panel3.Controls.Add(label3);
-            panel3.Controls.Add(textBox2);
-            panel3.Controls.Add(textBox1);
-            panel3.Controls.Add(label1);
-            panel3.Controls.Add(listView1);
-            panel3.Location = new Point(261, 134);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(1631, 1548);
-            panel3.TabIndex = 2;
-            // 
-            // comboBox5
-            // 
-            comboBox5.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox5.Font = new Font("Segoe UI", 15F);
-            comboBox5.FormattingEnabled = true;
-            comboBox5.Items.AddRange(new object[] { "Não", "Sim" });
-            comboBox5.Location = new Point(518, 595);
-            comboBox5.Name = "comboBox5";
-            comboBox5.Size = new Size(212, 43);
-            comboBox5.TabIndex = 25;
-            // 
-            // label35
-            // 
-            label35.AutoSize = true;
-            label35.Font = new Font("Segoe UI", 15F);
-            label35.Location = new Point(419, 603);
-            label35.Name = "label35";
-            label35.Size = new Size(93, 35);
-            label35.TabIndex = 24;
-            label35.Text = "Admin:";
-            // 
-            // textBox7
-            // 
-            textBox7.Location = new Point(1010, 691);
-            textBox7.Name = "textBox7";
-            textBox7.Size = new Size(125, 27);
-            textBox7.TabIndex = 23;
-            textBox7.Visible = false;
-            // 
-            // label11
-            // 
-            label11.AutoSize = true;
-            label11.Font = new Font("Segoe UI", 19F, FontStyle.Bold);
-            label11.Location = new Point(755, 47);
-            label11.Name = "label11";
-            label11.Size = new Size(198, 45);
-            label11.TabIndex = 22;
-            label11.Text = "Utilizadores";
-            // 
-            // button5
-            // 
-            button5.BackColor = Color.FromArgb(8, 60, 148);
-            button5.Font = new Font("Segoe UI", 20F);
-            button5.ForeColor = SystemColors.ButtonFace;
-            button5.Location = new Point(734, 712);
-            button5.Name = "button5";
-            button5.Size = new Size(178, 59);
-            button5.TabIndex = 20;
-            button5.Text = "Salvar";
-            button5.UseVisualStyleBackColor = false;
-            button5.Click += button5_Click;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 15F);
-            label2.Location = new Point(829, 431);
-            label2.Name = "label2";
-            label2.Size = new Size(80, 35);
-            label2.TabIndex = 19;
-            label2.Text = "Email:";
-            // 
-            // textBox4
-            // 
-            textBox4.Font = new Font("Segoe UI", 15F);
-            textBox4.Location = new Point(986, 521);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(267, 41);
-            textBox4.TabIndex = 18;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 15F);
-            label4.Location = new Point(829, 525);
-            label4.Name = "label4";
-            label4.Size = new Size(151, 35);
-            label4.TabIndex = 17;
-            label4.Text = "Documento:";
-            // 
-            // textBox3
-            // 
-            textBox3.Font = new Font("Segoe UI", 15F);
-            textBox3.Location = new Point(555, 520);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(174, 41);
-            textBox3.TabIndex = 16;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 15F);
-            label3.Location = new Point(419, 522);
-            label3.Name = "label3";
-            label3.Size = new Size(131, 35);
-            label3.TabIndex = 15;
-            label3.Text = "Telemovel:";
-            // 
-            // textBox2
-            // 
-            textBox2.Font = new Font("Segoe UI", 15F);
-            textBox2.Location = new Point(920, 429);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(333, 41);
-            textBox2.TabIndex = 14;
-            // 
-            // textBox1
-            // 
-            textBox1.Font = new Font("Segoe UI", 15F);
-            textBox1.Location = new Point(507, 425);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(223, 41);
-            textBox1.TabIndex = 13;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 15F);
-            label1.Location = new Point(419, 429);
-            label1.Name = "label1";
-            label1.Size = new Size(89, 35);
-            label1.TabIndex = 12;
-            label1.Text = "Nome:";
-            // 
-            // listView1
-            // 
-            listView1.Location = new Point(419, 119);
-            listView1.Name = "listView1";
-            listView1.Size = new Size(834, 271);
-            listView1.TabIndex = 11;
-            listView1.UseCompatibleStateImageBehavior = false;
-            listView1.SelectedIndexChanged += listView1_SelectedIndexChanged_1;
-            // 
-            // panel5
-            // 
-            panel5.Controls.Add(checkBox1);
-            panel5.Controls.Add(label38);
-            panel5.Controls.Add(label37);
-            panel5.Controls.Add(button10);
-            panel5.Controls.Add(comboBox6);
-            panel5.Controls.Add(label36);
-            panel5.Controls.Add(dateTimePicker2);
-            panel5.Controls.Add(dateTimePicker1);
-            panel5.Controls.Add(label14);
-            panel5.Controls.Add(textBox11);
-            panel5.Controls.Add(comboBox3);
-            panel5.Controls.Add(comboBox4);
-            panel5.Controls.Add(label15);
-            panel5.Controls.Add(label16);
-            panel5.Controls.Add(button7);
-            panel5.Controls.Add(label17);
-            panel5.Controls.Add(label20);
-            panel5.Controls.Add(listView2);
-            panel5.Location = new Point(261, 134);
-            panel5.Name = "panel5";
-            panel5.Size = new Size(1643, 800);
-            panel5.TabIndex = 22;
-            panel5.Visible = false;
-            // 
-            // checkBox1
-            // 
-            checkBox1.AutoSize = true;
-            checkBox1.Font = new Font("Segoe UI", 15F);
-            checkBox1.Location = new Point(938, 544);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(131, 39);
-            checkBox1.TabIndex = 37;
-            checkBox1.Text = "Desativa";
-            checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // label38
-            // 
-            label38.AutoSize = true;
-            label38.Font = new Font("Segoe UI", 15F);
-            label38.Location = new Point(795, 543);
-            label38.Name = "label38";
-            label38.Size = new Size(95, 35);
-            label38.TabIndex = 36;
-            label38.Text = "Estado:";
-            // 
-            // label37
-            // 
-            label37.AutoSize = true;
-            label37.Font = new Font("Segoe UI", 15F);
-            label37.ForeColor = Color.Red;
-            label37.Location = new Point(695, 402);
-            label37.Name = "label37";
-            label37.Size = new Size(202, 35);
-            label37.TabIndex = 35;
-            label37.Text = "Reserva Expirada";
-            label37.Visible = false;
-            // 
-            // button10
-            // 
-            button10.BackColor = Color.FromArgb(8, 60, 148);
-            button10.Enabled = false;
-            button10.Font = new Font("Segoe UI", 19F);
-            button10.ForeColor = SystemColors.ButtonFace;
-            button10.Location = new Point(938, 701);
-            button10.Name = "button10";
-            button10.Size = new Size(173, 57);
-            button10.TabIndex = 34;
-            button10.Text = "Check-In";
-            button10.UseVisualStyleBackColor = false;
-            button10.Click += button10_Click;
-            // 
-            // comboBox6
-            // 
-            comboBox6.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox6.Font = new Font("Segoe UI", 15F);
-            comboBox6.FormattingEnabled = true;
-            comboBox6.Items.AddRange(new object[] { "1", "2", "3", "4", "5" });
-            comboBox6.Location = new Point(546, 543);
-            comboBox6.Name = "comboBox6";
-            comboBox6.Size = new Size(196, 43);
-            comboBox6.TabIndex = 33;
-            // 
-            // label36
-            // 
-            label36.AutoSize = true;
-            label36.Font = new Font("Segoe UI", 15F);
-            label36.Location = new Point(409, 543);
-            label36.Name = "label36";
-            label36.Size = new Size(131, 35);
-            label36.TabIndex = 32;
-            label36.Text = "Hospedes:";
-            // 
-            // dateTimePicker2
-            // 
-            dateTimePicker2.Font = new Font("Segoe UI", 15F);
-            dateTimePicker2.Location = new Point(938, 608);
-            dateTimePicker2.Name = "dateTimePicker2";
-            dateTimePicker2.Size = new Size(221, 41);
-            dateTimePicker2.TabIndex = 31;
-            // 
-            // dateTimePicker1
-            // 
-            dateTimePicker1.Font = new Font("Segoe UI", 15F);
-            dateTimePicker1.Location = new Point(520, 608);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(222, 41);
-            dateTimePicker1.TabIndex = 30;
-            // 
-            // label14
-            // 
-            label14.AutoSize = true;
-            label14.Font = new Font("Segoe UI", 15F);
-            label14.Location = new Point(795, 608);
-            label14.Name = "label14";
-            label14.Size = new Size(137, 35);
-            label14.TabIndex = 28;
-            label14.Text = "Check-Out:";
-            // 
-            // textBox11
-            // 
-            textBox11.Location = new Point(170, 410);
-            textBox11.Name = "textBox11";
-            textBox11.Size = new Size(125, 27);
-            textBox11.TabIndex = 27;
-            // 
-            // comboBox3
-            // 
-            comboBox3.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox3.Font = new Font("Segoe UI", 15F);
-            comboBox3.FormattingEnabled = true;
-            comboBox3.Location = new Point(938, 473);
-            comboBox3.Name = "comboBox3";
-            comboBox3.Size = new Size(196, 43);
-            comboBox3.TabIndex = 26;
-            // 
-            // comboBox4
-            // 
-            comboBox4.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox4.Font = new Font("Segoe UI", 15F);
-            comboBox4.FormattingEnabled = true;
-            comboBox4.Location = new Point(510, 475);
-            comboBox4.Name = "comboBox4";
-            comboBox4.Size = new Size(232, 43);
-            comboBox4.TabIndex = 24;
-            // 
-            // label15
-            // 
-            label15.AutoSize = true;
-            label15.Font = new Font("Segoe UI", 15F);
-            label15.Location = new Point(409, 608);
-            label15.Name = "label15";
-            label15.Size = new Size(105, 35);
-            label15.TabIndex = 22;
-            label15.Text = "Chek-In:";
-            // 
-            // label16
-            // 
-            label16.AutoSize = true;
-            label16.Font = new Font("Segoe UI", 19F, FontStyle.Bold);
-            label16.Location = new Point(711, 37);
-            label16.Name = "label16";
-            label16.Size = new Size(150, 45);
-            label16.TabIndex = 21;
-            label16.Text = "Reservas";
-            // 
-            // button7
-            // 
-            button7.BackColor = Color.FromArgb(8, 60, 148);
-            button7.Font = new Font("Segoe UI", 19F);
-            button7.ForeColor = SystemColors.ButtonFace;
-            button7.Location = new Point(520, 701);
-            button7.Name = "button7";
-            button7.Size = new Size(178, 59);
-            button7.TabIndex = 20;
-            button7.Text = "Salvar";
-            button7.UseVisualStyleBackColor = false;
-            button7.Click += button7_Click;
-            // 
-            // label17
-            // 
-            label17.AutoSize = true;
-            label17.Font = new Font("Segoe UI", 15F);
-            label17.Location = new Point(784, 473);
-            label17.Name = "label17";
-            label17.Size = new Size(148, 35);
-            label17.TabIndex = 19;
-            label17.Text = "Alojamento:";
-            // 
-            // label20
-            // 
-            label20.AutoSize = true;
-            label20.Font = new Font("Segoe UI", 15F);
-            label20.Location = new Point(409, 473);
-            label20.Name = "label20";
-            label20.Size = new Size(95, 35);
-            label20.TabIndex = 12;
-            label20.Text = "Cliente:";
-            // 
-            // listView2
-            // 
-            listView2.Location = new Point(308, 111);
-            listView2.Name = "listView2";
-            listView2.Size = new Size(1002, 271);
-            listView2.TabIndex = 11;
-            listView2.UseCompatibleStateImageBehavior = false;
-            listView2.SelectedIndexChanged += listView2_SelectedIndexChanged;
             // 
             // panel6
             // 
@@ -1144,11 +784,12 @@
             // label24
             // 
             label24.AutoSize = true;
-            label24.Location = new Point(409, 387);
+            label24.Font = new Font("Segoe UI", 12F);
+            label24.Location = new Point(409, 379);
             label24.Name = "label24";
-            label24.Size = new Size(133, 20);
+            label24.Size = new Size(90, 28);
             label24.TabIndex = 32;
-            label24.Text = "Proximas Reservas:";
+            label24.Text = "Reservas:";
             // 
             // label21
             // 
@@ -1168,20 +809,408 @@
             listView3.TabIndex = 11;
             listView3.UseCompatibleStateImageBehavior = false;
             // 
+            // panel3
+            // 
+            panel3.Controls.Add(checkBox2);
+            panel3.Controls.Add(label39);
+            panel3.Controls.Add(comboBox5);
+            panel3.Controls.Add(label35);
+            panel3.Controls.Add(textBox7);
+            panel3.Controls.Add(label11);
+            panel3.Controls.Add(button5);
+            panel3.Controls.Add(label2);
+            panel3.Controls.Add(textBox4);
+            panel3.Controls.Add(label4);
+            panel3.Controls.Add(textBox3);
+            panel3.Controls.Add(label3);
+            panel3.Controls.Add(textBox2);
+            panel3.Controls.Add(textBox1);
+            panel3.Controls.Add(label1);
+            panel3.Controls.Add(listView1);
+            panel3.Location = new Point(261, 134);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(1576, 1477);
+            panel3.TabIndex = 2;
+            // 
+            // checkBox2
+            // 
+            checkBox2.AutoSize = true;
+            checkBox2.Font = new Font("Segoe UI", 15F);
+            checkBox2.Location = new Point(972, 601);
+            checkBox2.Name = "checkBox2";
+            checkBox2.Size = new Size(133, 39);
+            checkBox2.TabIndex = 39;
+            checkBox2.Text = "Desativo";
+            checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // label39
+            // 
+            label39.AutoSize = true;
+            label39.Font = new Font("Segoe UI", 15F);
+            label39.Location = new Point(829, 600);
+            label39.Name = "label39";
+            label39.Size = new Size(95, 35);
+            label39.TabIndex = 38;
+            label39.Text = "Estado:";
+            // 
+            // comboBox5
+            // 
+            comboBox5.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox5.Font = new Font("Segoe UI", 15F);
+            comboBox5.FormattingEnabled = true;
+            comboBox5.Items.AddRange(new object[] { "Não", "Sim" });
+            comboBox5.Location = new Point(518, 595);
+            comboBox5.Name = "comboBox5";
+            comboBox5.Size = new Size(212, 43);
+            comboBox5.TabIndex = 25;
+            // 
+            // label35
+            // 
+            label35.AutoSize = true;
+            label35.Font = new Font("Segoe UI", 15F);
+            label35.Location = new Point(419, 603);
+            label35.Name = "label35";
+            label35.Size = new Size(93, 35);
+            label35.TabIndex = 24;
+            label35.Text = "Admin:";
+            // 
+            // textBox7
+            // 
+            textBox7.Location = new Point(1010, 691);
+            textBox7.Name = "textBox7";
+            textBox7.Size = new Size(125, 27);
+            textBox7.TabIndex = 23;
+            textBox7.Visible = false;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Font = new Font("Segoe UI", 19F, FontStyle.Bold);
+            label11.Location = new Point(755, 47);
+            label11.Name = "label11";
+            label11.Size = new Size(198, 45);
+            label11.TabIndex = 22;
+            label11.Text = "Utilizadores";
+            // 
+            // button5
+            // 
+            button5.BackColor = Color.FromArgb(8, 60, 148);
+            button5.Font = new Font("Segoe UI", 20F);
+            button5.ForeColor = SystemColors.ButtonFace;
+            button5.Location = new Point(734, 712);
+            button5.Name = "button5";
+            button5.Size = new Size(178, 59);
+            button5.TabIndex = 20;
+            button5.Text = "Salvar";
+            button5.UseVisualStyleBackColor = false;
+            button5.Click += button5_Click;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 15F);
+            label2.Location = new Point(829, 431);
+            label2.Name = "label2";
+            label2.Size = new Size(80, 35);
+            label2.TabIndex = 19;
+            label2.Text = "Email:";
+            // 
+            // textBox4
+            // 
+            textBox4.Font = new Font("Segoe UI", 15F);
+            textBox4.Location = new Point(986, 521);
+            textBox4.Name = "textBox4";
+            textBox4.Size = new Size(267, 41);
+            textBox4.TabIndex = 18;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 15F);
+            label4.Location = new Point(829, 525);
+            label4.Name = "label4";
+            label4.Size = new Size(151, 35);
+            label4.TabIndex = 17;
+            label4.Text = "Documento:";
+            // 
+            // textBox3
+            // 
+            textBox3.Font = new Font("Segoe UI", 15F);
+            textBox3.Location = new Point(555, 520);
+            textBox3.Name = "textBox3";
+            textBox3.Size = new Size(174, 41);
+            textBox3.TabIndex = 16;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 15F);
+            label3.Location = new Point(419, 522);
+            label3.Name = "label3";
+            label3.Size = new Size(131, 35);
+            label3.TabIndex = 15;
+            label3.Text = "Telemovel:";
+            // 
+            // textBox2
+            // 
+            textBox2.Font = new Font("Segoe UI", 15F);
+            textBox2.Location = new Point(920, 429);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(333, 41);
+            textBox2.TabIndex = 14;
+            // 
+            // textBox1
+            // 
+            textBox1.Font = new Font("Segoe UI", 15F);
+            textBox1.Location = new Point(507, 425);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(223, 41);
+            textBox1.TabIndex = 13;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 15F);
+            label1.Location = new Point(419, 429);
+            label1.Name = "label1";
+            label1.Size = new Size(89, 35);
+            label1.TabIndex = 12;
+            label1.Text = "Nome:";
+            // 
+            // listView1
+            // 
+            listView1.Location = new Point(419, 119);
+            listView1.Name = "listView1";
+            listView1.Size = new Size(834, 271);
+            listView1.TabIndex = 11;
+            listView1.UseCompatibleStateImageBehavior = false;
+            listView1.SelectedIndexChanged += listView1_SelectedIndexChanged_1;
+            // 
+            // panel5
+            // 
+            panel5.Controls.Add(checkBox1);
+            panel5.Controls.Add(label38);
+            panel5.Controls.Add(label37);
+            panel5.Controls.Add(button10);
+            panel5.Controls.Add(comboBox6);
+            panel5.Controls.Add(label36);
+            panel5.Controls.Add(dateTimePicker2);
+            panel5.Controls.Add(dateTimePicker1);
+            panel5.Controls.Add(label14);
+            panel5.Controls.Add(textBox11);
+            panel5.Controls.Add(comboBox3);
+            panel5.Controls.Add(comboBox4);
+            panel5.Controls.Add(label15);
+            panel5.Controls.Add(label16);
+            panel5.Controls.Add(button7);
+            panel5.Controls.Add(label17);
+            panel5.Controls.Add(label20);
+            panel5.Controls.Add(listView2);
+            panel5.Location = new Point(261, 134);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(1694, 784);
+            panel5.TabIndex = 22;
+            panel5.Visible = false;
+            // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Font = new Font("Segoe UI", 15F);
+            checkBox1.Location = new Point(938, 544);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(131, 39);
+            checkBox1.TabIndex = 37;
+            checkBox1.Text = "Desativa";
+            checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // label38
+            // 
+            label38.AutoSize = true;
+            label38.Font = new Font("Segoe UI", 15F);
+            label38.Location = new Point(795, 543);
+            label38.Name = "label38";
+            label38.Size = new Size(95, 35);
+            label38.TabIndex = 36;
+            label38.Text = "Estado:";
+            // 
+            // label37
+            // 
+            label37.AutoSize = true;
+            label37.Font = new Font("Segoe UI", 15F);
+            label37.ForeColor = Color.Red;
+            label37.Location = new Point(695, 402);
+            label37.Name = "label37";
+            label37.Size = new Size(202, 35);
+            label37.TabIndex = 35;
+            label37.Text = "Reserva Expirada";
+            label37.Visible = false;
+            // 
+            // button10
+            // 
+            button10.BackColor = Color.FromArgb(8, 60, 148);
+            button10.Enabled = false;
+            button10.Font = new Font("Segoe UI", 19F);
+            button10.ForeColor = SystemColors.ButtonFace;
+            button10.Location = new Point(938, 701);
+            button10.Name = "button10";
+            button10.Size = new Size(173, 57);
+            button10.TabIndex = 34;
+            button10.Text = "Check-In";
+            button10.UseVisualStyleBackColor = false;
+            button10.Click += button10_Click;
+            // 
+            // comboBox6
+            // 
+            comboBox6.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox6.Font = new Font("Segoe UI", 15F);
+            comboBox6.FormattingEnabled = true;
+            comboBox6.Items.AddRange(new object[] { "1", "2", "3", "4", "5" });
+            comboBox6.Location = new Point(546, 543);
+            comboBox6.Name = "comboBox6";
+            comboBox6.Size = new Size(196, 43);
+            comboBox6.TabIndex = 33;
+            // 
+            // label36
+            // 
+            label36.AutoSize = true;
+            label36.Font = new Font("Segoe UI", 15F);
+            label36.Location = new Point(409, 543);
+            label36.Name = "label36";
+            label36.Size = new Size(131, 35);
+            label36.TabIndex = 32;
+            label36.Text = "Hospedes:";
+            // 
+            // dateTimePicker2
+            // 
+            dateTimePicker2.Font = new Font("Segoe UI", 15F);
+            dateTimePicker2.Location = new Point(938, 608);
+            dateTimePicker2.Name = "dateTimePicker2";
+            dateTimePicker2.Size = new Size(221, 41);
+            dateTimePicker2.TabIndex = 31;
+            // 
+            // dateTimePicker1
+            // 
+            dateTimePicker1.Font = new Font("Segoe UI", 15F);
+            dateTimePicker1.Location = new Point(520, 608);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new Size(222, 41);
+            dateTimePicker1.TabIndex = 30;
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Font = new Font("Segoe UI", 15F);
+            label14.Location = new Point(795, 608);
+            label14.Name = "label14";
+            label14.Size = new Size(137, 35);
+            label14.TabIndex = 28;
+            label14.Text = "Check-Out:";
+            // 
+            // textBox11
+            // 
+            textBox11.Location = new Point(170, 410);
+            textBox11.Name = "textBox11";
+            textBox11.Size = new Size(125, 27);
+            textBox11.TabIndex = 27;
+            textBox11.Visible = false;
+            // 
+            // comboBox3
+            // 
+            comboBox3.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox3.Font = new Font("Segoe UI", 15F);
+            comboBox3.FormattingEnabled = true;
+            comboBox3.Location = new Point(938, 473);
+            comboBox3.Name = "comboBox3";
+            comboBox3.Size = new Size(196, 43);
+            comboBox3.TabIndex = 26;
+            // 
+            // comboBox4
+            // 
+            comboBox4.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox4.Font = new Font("Segoe UI", 15F);
+            comboBox4.FormattingEnabled = true;
+            comboBox4.Location = new Point(510, 475);
+            comboBox4.Name = "comboBox4";
+            comboBox4.Size = new Size(232, 43);
+            comboBox4.TabIndex = 24;
+            // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.Font = new Font("Segoe UI", 15F);
+            label15.Location = new Point(409, 608);
+            label15.Name = "label15";
+            label15.Size = new Size(105, 35);
+            label15.TabIndex = 22;
+            label15.Text = "Chek-In:";
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Font = new Font("Segoe UI", 19F, FontStyle.Bold);
+            label16.Location = new Point(711, 37);
+            label16.Name = "label16";
+            label16.Size = new Size(150, 45);
+            label16.TabIndex = 21;
+            label16.Text = "Reservas";
+            // 
+            // button7
+            // 
+            button7.BackColor = Color.FromArgb(8, 60, 148);
+            button7.Font = new Font("Segoe UI", 19F);
+            button7.ForeColor = SystemColors.ButtonFace;
+            button7.Location = new Point(520, 701);
+            button7.Name = "button7";
+            button7.Size = new Size(178, 59);
+            button7.TabIndex = 20;
+            button7.Text = "Salvar";
+            button7.UseVisualStyleBackColor = false;
+            button7.Click += button7_Click;
+            // 
+            // label17
+            // 
+            label17.AutoSize = true;
+            label17.Font = new Font("Segoe UI", 15F);
+            label17.Location = new Point(784, 473);
+            label17.Name = "label17";
+            label17.Size = new Size(148, 35);
+            label17.TabIndex = 19;
+            label17.Text = "Alojamento:";
+            // 
+            // label20
+            // 
+            label20.AutoSize = true;
+            label20.Font = new Font("Segoe UI", 15F);
+            label20.Location = new Point(409, 473);
+            label20.Name = "label20";
+            label20.Size = new Size(95, 35);
+            label20.TabIndex = 12;
+            label20.Text = "Cliente:";
+            // 
+            // listView2
+            // 
+            listView2.Location = new Point(308, 111);
+            listView2.Name = "listView2";
+            listView2.Size = new Size(1002, 271);
+            listView2.TabIndex = 11;
+            listView2.UseCompatibleStateImageBehavior = false;
+            listView2.SelectedIndexChanged += listView2_SelectedIndexChanged;
+            // 
             // FormAdm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.HighlightText;
             ClientSize = new Size(1916, 1055);
-            Controls.Add(panel5);
             Controls.Add(panel3);
             Controls.Add(panel6);
             Controls.Add(panel2);
+            Controls.Add(panel5);
             Controls.Add(panel1);
             Controls.Add(panel4);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormAdm";
-            Text = "Form1";
+            Text = "Admin - Dashboard";
             WindowState = FormWindowState.Maximized;
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -1190,10 +1219,6 @@
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)webView21).EndInit();
-            panel3.ResumeLayout(false);
-            panel3.PerformLayout();
-            panel5.ResumeLayout(false);
-            panel5.PerformLayout();
             panel6.ResumeLayout(false);
             panel6.PerformLayout();
             panel10.ResumeLayout(false);
@@ -1208,6 +1233,10 @@
             panel7.ResumeLayout(false);
             panel7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            panel3.ResumeLayout(false);
+            panel3.PerformLayout();
+            panel5.ResumeLayout(false);
+            panel5.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -1307,5 +1336,7 @@
         private Label label37;
         private CheckBox checkBox1;
         private Label label38;
+        private CheckBox checkBox2;
+        private Label label39;
     }
 }

@@ -37,12 +37,18 @@ namespace ProjetoPo
             string password = txtPassCreate.Text;
             string phone = txtPhoneCreate.Text;
             string documentId = txtIdCreate.Text;
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(phone) || string.IsNullOrEmpty(documentId))
+            {
+                MessageBox.Show("Todos os campos devem ser preenchidos.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
 
             byte[] data = Encoding.ASCII.GetBytes(password);
             data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
             string hash = BitConverter.ToString(data).Replace("-", "").ToLower();
 
-            if (Pessoa.EmailJaExistente(email))
+            if (PessoaTable.EmailJaExistente(email))
             {
                 MessageBox.Show("Este e-mail já está em uso. Por favor, utilize um e-mail diferente.");
                 return;
@@ -54,13 +60,13 @@ namespace ProjetoPo
                 Email = email,
                 Telefone = phone,
                 DocumentoIdentidade = documentId,
-                Senha = hash, 
+                Senha = hash,
                 Adm = false
             };
 
             try
             {
-                novaPessoa.Salvar();
+                PessoaTable.Salvar(novaPessoa);
 
                 MessageBox.Show("Conta criada com sucesso!");
 
@@ -74,6 +80,22 @@ namespace ProjetoPo
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao criar conta: " + ex.Message);
+            }
+        }
+
+        private void txtPhoneCreate_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtIdCreate_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
             }
         }
     }

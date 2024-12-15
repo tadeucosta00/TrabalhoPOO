@@ -36,6 +36,5 @@ namespace ProjetoPo.Models
         {
             return _pessoa;
         }
-
     }
 }

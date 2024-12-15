@@ -146,6 +146,7 @@
             txtPhoneCreate.Name = "txtPhoneCreate";
             txtPhoneCreate.Size = new Size(266, 34);
             txtPhoneCreate.TabIndex = 4;
+            txtPhoneCreate.KeyPress += txtPhoneCreate_KeyPress;
             // 
             // label5
             // 
@@ -164,6 +165,7 @@
             txtIdCreate.Name = "txtIdCreate";
             txtIdCreate.Size = new Size(265, 34);
             txtIdCreate.TabIndex = 5;
+            txtIdCreate.KeyPress += txtIdCreate_KeyPress;
             // 
             // panel2
             // 
@@ -216,9 +218,10 @@
             Controls.Add(label1);
             Controls.Add(txtPassCreate);
             Controls.Add(txtEmailCreate);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "CreateAccount";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "CreateAccount";
+            Text = "Criar Conta";
             WindowState = FormWindowState.Maximized;
             panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();

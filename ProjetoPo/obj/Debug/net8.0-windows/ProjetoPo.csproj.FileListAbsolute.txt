@@ -157,7 +157,6 @@ C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\ProjetoPo\bin\Debug\net8.0-windows\M
 C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\ProjetoPo\bin\Debug\net8.0-windows\Microsoft.Web.WebView2.WinForms.xml
 C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\ProjetoPo\obj\Debug\net8.0-windows\ProjetoPo.csproj.AssemblyReference.cache
 C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\ProjetoPo\obj\Debug\net8.0-windows\ProjetoPo.CreateAccount.resources
-C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\ProjetoPo\obj\Debug\net8.0-windows\ProjetoPo.Form1.resources
 C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\ProjetoPo\obj\Debug\net8.0-windows\ProjetoPo.FormAdm.resources
 C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\ProjetoPo\obj\Debug\net8.0-windows\ProjetoPo.FormClients.resources
 C:\Users\tadeu\Documents\GitHub\TrabalhoPOO\ProjetoPo\obj\Debug\net8.0-windows\ProjetoPo.FormViewImage.resources

@@ -21,7 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Logs\Logs.csproj" />
   </ItemGroup>
-
+	
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>

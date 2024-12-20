@@ -1,0 +1,205 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\tadeu\\Documents\\GitHub\\TrabalhoPOO\\Tests\\Tests.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\tadeu\\Documents\\GitHub\\TrabalhoPOO\\Logs\\Logs.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Users\\tadeu\\Documents\\GitHub\\TrabalhoPOO\\Logs\\Logs.csproj",
+        "projectName": "Logs",
+        "projectPath": "C:\\Users\\tadeu\\Documents\\GitHub\\TrabalhoPOO\\Logs\\Logs.csproj",
+        "frameworks": {
+          "net472": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net472": {}
+      }
+    },
+    "C:\\Users\\tadeu\\Documents\\GitHub\\TrabalhoPOO\\ProjetoPo\\ProjetoPo.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\tadeu\\Documents\\GitHub\\TrabalhoPOO\\ProjetoPo\\ProjetoPo.csproj",
+        "projectName": "ProjetoPo",
+        "projectPath": "C:\\Users\\tadeu\\Documents\\GitHub\\TrabalhoPOO\\ProjetoPo\\ProjetoPo.csproj",
+        "packagesPath": "C:\\Users\\tadeu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\tadeu\\Documents\\GitHub\\TrabalhoPOO\\ProjetoPo\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\tadeu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0-windows"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0-windows7.0": {
+            "targetAlias": "net8.0-windows",
+            "projectReferences": {
+              "C:\\Users\\tadeu\\Documents\\GitHub\\TrabalhoPOO\\Logs\\Logs.csproj": {
+                "projectPath": "C:\\Users\\tadeu\\Documents\\GitHub\\TrabalhoPOO\\Logs\\Logs.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0-windows7.0": {
+          "targetAlias": "net8.0-windows",
+          "dependencies": {
+            "IronPython": {
+              "target": "Package",
+              "version": "[3.4.1, )"
+            },
+            "Microsoft.AspNetCore.Components.WebView.Maui": {
+              "target": "Package",
+              "version": "[8.0.92, )"
+            },
+            "Microsoft.Web.WebView2": {
+              "target": "Package",
+              "version": "[1.0.2792.45, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[9.1.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
+            "itext7": {
+              "target": "Package",
+              "version": "[8.0.5, )"
+            },
+            "itext7.bouncy-castle-adapter": {
+              "target": "Package",
+              "version": "[8.0.5, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App.WindowsForms": {
+              "privateAssets": "none"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\tadeu\\Documents\\GitHub\\TrabalhoPOO\\Tests\\Tests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\tadeu\\Documents\\GitHub\\TrabalhoPOO\\Tests\\Tests.csproj",
+        "projectName": "Tests",
+        "projectPath": "C:\\Users\\tadeu\\Documents\\GitHub\\TrabalhoPOO\\Tests\\Tests.csproj",
+        "packagesPath": "C:\\Users\\tadeu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\tadeu\\Documents\\GitHub\\TrabalhoPOO\\Tests\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\tadeu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\tadeu\\Documents\\GitHub\\TrabalhoPOO\\Logs\\Logs.csproj": {
+                "projectPath": "C:\\Users\\tadeu\\Documents\\GitHub\\TrabalhoPOO\\Logs\\Logs.csproj"
+              },
+              "C:\\Users\\tadeu\\Documents\\GitHub\\TrabalhoPOO\\ProjetoPo\\ProjetoPo.csproj": {
+                "projectPath": "C:\\Users\\tadeu\\Documents\\GitHub\\TrabalhoPOO\\ProjetoPo\\ProjetoPo.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "MSTest.TestAdapter": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "MSTest.TestFramework": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.8.0, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

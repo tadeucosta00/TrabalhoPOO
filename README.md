@@ -3,7 +3,7 @@
 
 ### 💼 Desenvolvido por: Pedro Tadeu  
 **Número**: 20471  
-**Curso**: EsiPl  
+**Curso**: ESIPL  
 
 ---
 
